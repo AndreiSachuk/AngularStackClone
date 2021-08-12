@@ -1,49 +1,51 @@
-import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
+import { BrowserModule } from '@angular/platform-browser';
 
-// Reactive Form
-import { ReactiveFormsModule } from '@angular/forms';
-
-// App routing modules
-import { AppRoutingModule } from './shared/routing/app-routing.module';
-
-// App components
+import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { SignInComponent } from './components/sign-in/sign-in.component';
-import { SignUpComponent } from './components/sign-up/sign-up.component';
-import { DashboardComponent } from './components/dashboard/dashboard.component';
-import { ForgotPasswordComponent } from './components/forgot-password/forgot-password.component';
-import { VerifyEmailComponent } from './components/verify-email/verify-email.component';
+import {MaterialModule} from "./shared/material/material.module";
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { SignComponent } from './auth/signin/sign.component';
+import { DashboardComponent } from './main/dashboard/dashboard.component';
+import { HeadComponent } from './shared/components/head/head.component';
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { SignUpComponent } from './auth/sign-up/sign-up.component';
+import {HttpClientModule} from "@angular/common/http";
+import { DialogComponent } from './shared/components/dialog/dialog.component';
+import firebase from "firebase";
+import {environment} from "../environments/environment";
 
-// Firebase services + enviorment module
-import { AngularFireModule } from '@angular/fire';
-import { AngularFireAuthModule } from '@angular/fire/auth';
-import { AngularFirestoreModule } from '@angular/fire/firestore';
-import { environment } from '../environments/environment';
 
-// Auth service
-import { AuthService } from './shared/services/auth.service';
+firebase.initializeApp(environment.firebase);
+
 
 
 @NgModule({
   declarations: [
     AppComponent,
-    SignInComponent,
-    SignUpComponent,
+    SignComponent,
     DashboardComponent,
-    ForgotPasswordComponent,
-    VerifyEmailComponent
+    HeadComponent,
+    SignUpComponent,
+    DialogComponent,
   ],
+  entryComponents:[DialogComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
-    AngularFireModule.initializeApp(environment.firebase),
-    AngularFireAuthModule,
-    AngularFirestoreModule,
-    ReactiveFormsModule
+    MaterialModule,
+    BrowserAnimationsModule,
+    FormsModule,
+    ReactiveFormsModule,
+    FontAwesomeModule,
+    HttpClientModule,
+
+
+
   ],
-  providers: [AuthService],
+  providers: [],
   bootstrap: [AppComponent]
 })
-
-export class AppModule { }
+export class AppModule {
+}

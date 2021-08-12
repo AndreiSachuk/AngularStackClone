@@ -1,0 +1,36 @@
+
+<div class="signin__cont">
+
+  <form [formGroup]="form" (ngSubmit)="registration()" class="signin__form">
+    <a mat-button style="font-size:30px" routerLink="/sign-in"><i class="fa fa-coffee"></i> StackClone</a>
+    <br><br>
+    <h2>Registered with email</h2>
+
+    <div class="signin__form-part" >
+      <label for="email">Email </label>
+      <input type="email" formControlName="email" id = email placeholder="Email">
+      <div *ngIf="form.controls['email'].touched && form.controls['email'].invalid">
+        <small *ngIf="form.controls['email'].errors?.required">Enter Email</small>
+        <small *ngIf="form.controls['email'].errors?.email">Enter valid Email</small>
+      </div>
+    </div>
+
+    <div class="signin__form-part">
+      <label for="password">Password </label>
+      <input type="password" formControlName="password" id = password placeholder="Password">
+      <div *ngIf="form.get('password')?.touched && form.get('password')?.invalid" class="mat-warn">
+        <small *ngIf="form.get('password')?.errors?.required">Enter password</small>
+        <small *ngIf="form.get('password')?.errors?.minlength">
+          Password must ba at least {{form.get('password')?.errors?.minlength.requiredLength}} characters.
+        </small>
+      </div>
+    </div>
+
+
+    <button type="submit" mat-raised-button color="primary" [disabled]="form.invalid || submitted" > Registered with email</button>
+    <br>
+    <br>
+
+
+  </form>
+</div>

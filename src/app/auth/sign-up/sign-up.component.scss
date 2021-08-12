@@ -1,0 +1,36 @@
+.signin__cont {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 70vh;
+}
+
+.signin__form{
+  border: 1px solid #3a3a3a;
+  border-radius: 5px;
+  padding: 10px;
+  width: 320px;
+  text-align: center;
+  input{
+    padding: 10px;
+    margin: auto auto 5px;
+    border-radius:10px;
+    box-shadow:0 0 15px 4px rgba(0,0,0,0.06);
+    width: 90%;
+  }
+  label{
+    display: none;
+  }
+  &-part{
+    //display: flex;
+    //align-text: start;
+  }
+}
+
+.signin__social-media{
+  margin: 3px;
+  width: 300px;
+}
+
+input.ng-touched.ng-invalid {border:solid red 2px;}
+input.ng-touched.ng-valid {border:solid green 2px;}

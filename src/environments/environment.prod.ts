@@ -1,12 +1,12 @@
 export const environment = {
   production: true,
-  firebase:{
-    apiKey: "AIzaSyCpA3_b8NfTHZECqoduaWVZq8QgjN7zhCE",
-    authDomain: "angular-98c26.firebaseapp.com",
-    projectId: "angular-98c26",
-    storageBucket: "angular-98c26.appspot.com",
-    messagingSenderId: "209187227043",
-    appId: "1:209187227043:web:45c42c72b80d3c1ff68616",
-    measurementId: "G-GTX5MY69BF"
+  firebase: {
+    apiKey: "AIzaSyD9c7LCkYPehVt3epWF6wBcNjBkUvV-zU0",
+    authDomain: "stackclone-first.firebaseapp.com",
+    projectId: "stackclone-first",
+    storageBucket: "stackclone-first.appspot.com",
+    messagingSenderId: "1047667895592",
+    appId: "1:1047667895592:web:50a2907611c78ffe48f41d",
+    measurementId: "G-V3Z6R6TWVZ"
   }
 };

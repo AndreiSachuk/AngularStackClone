@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/angularfirebase.iml" filepath="$PROJECT_DIR$/.idea/angularfirebase.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/AngularStackClone.iml" filepath="$PROJECT_DIR$/.idea/AngularStackClone.iml" />
     </modules>
   </component>
 </project>

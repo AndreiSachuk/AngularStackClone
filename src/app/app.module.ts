@@ -15,11 +15,12 @@ import {HttpClientModule} from "@angular/common/http";
 import { DialogComponent } from './shared/components/dialog/dialog.component';
 import firebase from "firebase";
 import {environment} from "../environments/environment";
+import {AngularFireAuthModule} from "@angular/fire/auth";
+import {AngularFireModule} from "@angular/fire";
+import {MatDialogModule} from "@angular/material/dialog";
 
 
 firebase.initializeApp(environment.firebase);
-
-
 
 @NgModule({
   declarations: [
@@ -40,8 +41,9 @@ firebase.initializeApp(environment.firebase);
     ReactiveFormsModule,
     FontAwesomeModule,
     HttpClientModule,
-
-
+    AngularFireAuthModule,
+    AngularFireModule.initializeApp( environment.firebase),
+    MatDialogModule
 
   ],
   providers: [],

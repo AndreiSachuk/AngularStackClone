@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import {SharedAuthService} from "../../../auth/shared-auth.service";
 
 @Component({
   selector: 'app-dialog',
@@ -7,7 +8,10 @@ import { Component, OnInit } from '@angular/core';
 })
 export class DialogComponent implements OnInit {
 
-  constructor() { }
+
+  constructor(public auth: SharedAuthService) { }
+
+
 
   ngOnInit(): void {
   }

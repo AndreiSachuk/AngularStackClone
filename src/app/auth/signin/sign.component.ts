@@ -3,6 +3,9 @@ import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {faCodeBranch} from "@fortawesome/free-solid-svg-icons";
 import {SharedAuthService} from "../shared-auth.service";
 import {Router} from "@angular/router";
+import {user} from "../interfaces";
+import {DialogComponent} from "../../shared/components/dialog/dialog.component";
+import {MatDialog} from "@angular/material/dialog";
 
 @Component({
   selector: 'app-signin',
@@ -23,32 +26,34 @@ export class SignComponent implements OnInit {
 
   constructor(private auth: SharedAuthService,
               private router: Router,
+              private dialog: MatDialog,
   ) {
+  }
+
+  openDialog(){
+     this.dialog.open(DialogComponent);
   }
 
   signIn(): void {
 
     this.submitted = true
 
-    let user = {
+    let user: user = {
       email: this.form.value.email,
       password: this.form.value.password
 
     }
     this.auth.signInWithEmail(user.email, user.password)
       .then(res => {
-
         this.form.reset()
         this.submitted = false
         this.router.navigate(['/dashboard'])
-        let uid = res.user.uid
-        let email = res.user.email
-        console.log(uid, email)
-
       })
       .catch(err => {
           this.form.reset()
           this.submitted = false
+          this.auth.errMsg = err.message
+          this.openDialog()
         }
       )
   }
@@ -63,18 +68,27 @@ export class SignComponent implements OnInit {
           this.router.navigate(['/dashboard'])
         }
       )
-      .catch(err => console.log(err))
+      .catch(err => {
+        this.auth.errMsg = err.message
+        this.openDialog()
+      })
   }
 
   signInFacebook() {
     this.auth.signInWithFacebook()
       .then(r => this.router.navigate(['/dashboard']))
-      .catch(err => console.log(err))
+      .catch(err => {
+        this.auth.errMsg = err.message
+        this.openDialog()
+      })
   }
 
   signInGithub() {
     this.auth.signInWithGithub()
       .then(r => this.router.navigate(['/dashboard']))
-      .catch(err => console.log(err))
+      .catch(err => {
+        this.auth.errMsg = err.message
+        this.openDialog()
+      })
   }
 }

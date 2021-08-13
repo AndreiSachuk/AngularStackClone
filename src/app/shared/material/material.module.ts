@@ -18,7 +18,8 @@ const material = [
   MatProgressSpinnerModule,
   MatGridListModule,
   MatFormFieldModule,
-  MatDialogModule
+  MatDialogModule,
+
 ]
 
 

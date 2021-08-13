@@ -3,11 +3,11 @@
 
     <a mat-button style="font-size:30px" routerLink="/sign-in"><i class="fa fa-coffee"></i> StackClone</a>
   </div>
-  <div *ngIf="this.auth.isAuthentificated()===false">
+  <div *ngIf="!auth.getUserInfo()">
     <a mat-button routerLink="/sign-in">Sign In</a>
     <a mat-button routerLink="/sign-up">Sign Up</a>
   </div>
-  <div *ngIf="this.auth.isAuthentificated()===true">
+  <div *ngIf="auth.getUserInfo()">
     <a mat-button routerLink="/sign-in" (click)="logOut()">Sign Out</a>
   </div>
 

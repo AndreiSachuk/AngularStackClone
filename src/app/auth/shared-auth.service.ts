@@ -1,6 +1,8 @@
 import {Injectable} from '@angular/core';
-import {HttpClient} from "@angular/common/http";
 import firebase from "firebase";
+import { AngularFireAuth } from '@angular/fire/auth';
+import {Observable} from "rxjs";
+import {map} from "rxjs/operators";
 
 
 @Injectable({
@@ -8,7 +10,10 @@ import firebase from "firebase";
 })
 export class SharedAuthService {
 
-  constructor() {
+  private user: any
+  public errMsg:string = ''
+
+  constructor(private auth: AngularFireAuth) {
   }
 
   signUp(email: string, password: string): Promise<any> {
@@ -55,8 +60,14 @@ export class SharedAuthService {
     return userInfo
   }
 
-  isAuthentificated(): boolean {
-    const user = firebase.auth().currentUser
-    return !!user
+
+
+  checkAuth(): Observable<any> {
+    return this.auth.authState.pipe(
+      map((user)=> {
+        this.user = user
+        return user
+      }
+    ))
   }
 }

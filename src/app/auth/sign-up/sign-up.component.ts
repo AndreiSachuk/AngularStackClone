@@ -19,16 +19,17 @@ export class SignUpComponent implements OnInit {
   })
 
   submitted: boolean = false;
-  error: any
+
 
   constructor(private auth: SharedAuthService,
               private router: Router,
-              private dialog: MatDialog) {
+              private dialog: MatDialog,
+
+              ) {
   }
 
   openDialog(){
-    const dialogRef = this.dialog.open(DialogComponent);
-
+    this.dialog.open(DialogComponent);
   }
 
 
@@ -52,11 +53,10 @@ export class SignUpComponent implements OnInit {
       .then(res => {
         this.form.reset()
         this.router.navigate(['/sign-in'])
-
       })
       .catch(err => {
+        this.auth.errMsg = err.message
         this.openDialog()
-        this.error = err.error.error.message
         this.form.reset()
       }
     )

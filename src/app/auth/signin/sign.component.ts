@@ -37,9 +37,13 @@ export class SignComponent implements OnInit {
     }
     this.auth.signInWithEmail(user.email, user.password)
       .then(res => {
+
         this.form.reset()
         this.submitted = false
         this.router.navigate(['/dashboard'])
+        let uid = res.user.uid
+        let email = res.user.email
+        console.log(uid, email)
 
       })
       .catch(err => {

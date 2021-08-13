@@ -1,7 +1,5 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
-import {environment} from "../../environments/environment";
-import {user} from "./interfaces";
 import firebase from "firebase";
 
 
@@ -10,34 +8,51 @@ import firebase from "firebase";
 })
 export class SharedAuthService {
 
-  constructor(private http: HttpClient) {
+  constructor() {
   }
 
-  signUp(user: user) {
-    return this.http.post(`https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=${environment.firebase.apiKey}`, user)
+  signUp(email: string, password: string): Promise<any> {
+    return firebase.auth().createUserWithEmailAndPassword(email, password)
   }
 
-  signInWithEmail(email:string, password:string) {
+  signInWithEmail(email: string, password: string): Promise<any> {
     return firebase.auth().signInWithEmailAndPassword(email, password)
   }
 
-  signInWithGoogle() {
+  signInWithGoogle(): Promise<any> {
     const provider = new firebase.auth.GoogleAuthProvider();
     return firebase.auth().signInWithPopup(provider)
   }
 
-  signInWithFacebook() {
+  signInWithFacebook(): Promise<any> {
     const provider = new firebase.auth.FacebookAuthProvider();
     return firebase.auth().signInWithPopup(provider)
   }
 
-  signInWithGithub() {
+  signInWithGithub(): Promise<any> {
     const provider = new firebase.auth.GithubAuthProvider();
     return firebase.auth().signInWithPopup(provider)
   }
 
-  signOut() {
+  signOut(): Promise<any> {
     return firebase.auth().signOut()
+  }
+
+  getUserInfo(): object {
+    const user = firebase.auth().currentUser
+    let userInfo!: object;
+
+    if (user != null) {
+      userInfo = {
+        name: user.displayName,
+        email: user.email,
+        photoUrl: user.photoURL,
+        emailVerified: user.emailVerified,
+        uid: user.uid,
+      }
+    }
+
+    return userInfo
   }
 
   isAuthentificated(): boolean {

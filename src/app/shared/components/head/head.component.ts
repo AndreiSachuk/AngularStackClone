@@ -16,7 +16,7 @@ export class HeadComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  logOut(){
+  logOut(): void{
     this.auth.signOut()
       .then(r => {
         this.router.navigate(['/sign-in'])

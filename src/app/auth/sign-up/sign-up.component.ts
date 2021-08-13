@@ -4,6 +4,7 @@ import {SharedAuthService} from "../shared-auth.service";
 import {Router} from "@angular/router";
 import {MatDialog} from "@angular/material/dialog";
 import {DialogComponent} from "../../shared/components/dialog/dialog.component";
+import {user} from "../interfaces";
 
 @Component({
   selector: 'app-sign-up',
@@ -41,16 +42,19 @@ export class SignUpComponent implements OnInit {
     this.submitted = true
 
 
-    let user = {
+    let user:user = {
       email: this.form.value.email,
       password: this.form.value.password
-
     }
-    this.auth.signUp(user).subscribe(res => {
+
+
+    this.auth.signUp(user.email, user.password)
+      .then(res => {
         this.form.reset()
         this.router.navigate(['/sign-in'])
-      },
-      err => {
+
+      })
+      .catch(err => {
         this.openDialog()
         this.error = err.error.error.message
         this.form.reset()

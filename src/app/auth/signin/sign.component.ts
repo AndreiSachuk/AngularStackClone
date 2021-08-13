@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, NgZone, OnInit} from '@angular/core';
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {faCodeBranch} from "@fortawesome/free-solid-svg-icons";
 import {SharedAuthService} from "../shared-auth.service";
@@ -27,6 +27,7 @@ export class SignComponent implements OnInit {
   constructor(private auth: SharedAuthService,
               private router: Router,
               private dialog: MatDialog,
+              private ngZone: NgZone,
   ) {
   }
 
@@ -65,7 +66,7 @@ export class SignComponent implements OnInit {
   signInGoogle() {
     this.auth.signInWithGoogle()
       .then(r => {
-          this.router.navigate(['/dashboard'])
+        this.ngZone.run(()=> this.router.navigate(['/dashboard']))
         }
       )
       .catch(err => {
@@ -76,7 +77,7 @@ export class SignComponent implements OnInit {
 
   signInFacebook() {
     this.auth.signInWithFacebook()
-      .then(r => this.router.navigate(['/dashboard']))
+      .then(r => this.ngZone.run(()=> this.router.navigate(['/dashboard'])))
       .catch(err => {
         this.auth.errMsg = err.message
         this.openDialog()
@@ -85,7 +86,7 @@ export class SignComponent implements OnInit {
 
   signInGithub() {
     this.auth.signInWithGithub()
-      .then(r => this.router.navigate(['/dashboard']))
+      .then(r => this.ngZone.run(()=> this.router.navigate(['/dashboard'])))
       .catch(err => {
         this.auth.errMsg = err.message
         this.openDialog()

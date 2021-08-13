@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import firebase from "firebase";
+import firebase from "firebase/app";
 import { AngularFireAuth } from '@angular/fire/auth';
 import {Observable} from "rxjs";
 import {map} from "rxjs/operators";
@@ -13,7 +13,7 @@ export class SharedAuthService {
   private user: any
   public errMsg:string = ''
 
-  constructor(private auth: AngularFireAuth) {
+  constructor(private auth: AngularFireAuth,) {
   }
 
   signUp(email: string, password: string): Promise<any> {

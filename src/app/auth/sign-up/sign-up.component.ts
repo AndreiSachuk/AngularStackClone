@@ -23,12 +23,10 @@ export class SignUpComponent implements OnInit {
 
   constructor(private auth: SharedAuthService,
               private router: Router,
-              private dialog: MatDialog,
-
-              ) {
+              private dialog: MatDialog,) {
   }
 
-  openDialog(){
+  openDialog(): void{
     this.dialog.open(DialogComponent);
   }
 
@@ -36,7 +34,7 @@ export class SignUpComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  registration() {
+  registration():void {
     if (this.form.invalid) {
       return
     }

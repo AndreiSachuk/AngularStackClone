@@ -13,12 +13,11 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { SignUpComponent } from './auth/sign-up/sign-up.component';
 import {HttpClientModule} from "@angular/common/http";
 import { DialogComponent } from './shared/components/dialog/dialog.component';
-import firebase from "firebase";
+import firebase from "firebase/app";
 import {environment} from "../environments/environment";
 import {AngularFireAuthModule} from "@angular/fire/auth";
 import {AngularFireModule} from "@angular/fire";
 import {MatDialogModule} from "@angular/material/dialog";
-
 
 firebase.initializeApp(environment.firebase);
 
@@ -43,7 +42,7 @@ firebase.initializeApp(environment.firebase);
     HttpClientModule,
     AngularFireAuthModule,
     AngularFireModule.initializeApp( environment.firebase),
-    MatDialogModule
+    MatDialogModule,
 
   ],
   providers: [],

@@ -2,7 +2,7 @@
 
 <div *ngIf="userInfo" class="center">
 
-      <img src="{{(this.photoUrl) ? this.photoUrl : '/assets/dummy-user.png'}}"
+      <img src="{{(this.photoUrl) ? this.photoUrl : 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTcZsL6PVn0SNiabAKz7js0QknS2ilJam19QQ&usqp=CAU'}}"
            alt="{{this.name}}">
       <div >
         <h1>Hello: <strong>{{(this.name) ? this.name : 'User'}}</strong></h1>

@@ -16,7 +16,7 @@
 
     <div class="signin__form-part">
       <label for="password">Password </label>
-      <input type="password" formControlName="password" id = password placeholder="Password">
+      <input type="password" formControlName="password" id = password placeholder="Password" autocomplete="on">
       <div *ngIf="form.get('password')?.touched && form.get('password')?.invalid" class="mat-warn">
         <small *ngIf="form.get('password')?.errors?.required">Enter password</small>
         <small *ngIf="form.get('password')?.errors?.minlength">

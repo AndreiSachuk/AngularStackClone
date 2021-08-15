@@ -3,12 +3,18 @@
 
     <a mat-button class="font" routerLink="/dashboard"><i class="fa fa-coffee"></i> StackClone</a>
   </div>
-  <div *ngIf="!auth.getUserInfo()">
+  <div *ngIf="!authService.getUserInfo()">
     <a mat-button routerLink="/sign-in">Sign In</a>
     <a mat-button routerLink="/sign-up">Sign Up</a>
   </div>
-  <div *ngIf="auth.getUserInfo()">
-    <a mat-button (click)="logOut()">Sign Out</a>
+  <div *ngIf="authService.getUserInfo()">
+    <a mat-button routerLink="/sign-up">ADD QUESTION</a>
+    <button mat-button [matMenuTriggerFor]="menu">{{userInfo.name||'User'}}</button>
+    <mat-menu #menu="matMenu">
+      <button mat-menu-item>User Info</button>
+      <button mat-menu-item (click)="logOut()">Sign Out</button>
+    </mat-menu>
+
   </div>
 
 </mat-toolbar>

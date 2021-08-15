@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {SharedAuthService} from "../../services/shared-auth.service";
 import {Router} from "@angular/router";
+import {UserInfo} from "../../interfaces";
 
 @Component({
   selector: 'app-head',
@@ -10,16 +11,20 @@ import {Router} from "@angular/router";
 export class HeadComponent implements OnInit {
 
 
-  constructor(public auth: SharedAuthService,
-              private router: Router) { }
+  constructor(public authService: SharedAuthService,
+              private routerService: Router,
+  ) {
+  }
 
   ngOnInit(): void {
   }
 
-  logOut(): void{
-    this.auth.signOut()
+  userInfo: UserInfo = this.authService.getUserInfo()
+
+  logOut(): void {
+    this.authService.signOut()
       .then(r => {
-        this.router.navigate(['/sign-in'])
+        this.routerService.navigate(['/sign-in'])
       })
   }
 

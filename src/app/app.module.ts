@@ -16,6 +16,7 @@ import { DialogComponent } from './shared/components/dialog/dialog.component';
 import {environment} from "../environments/environment";
 
 import {AngularFireModule} from "@angular/fire";
+import {MatMenuModule} from "@angular/material/menu";
 
 @NgModule({
   declarations: [
@@ -35,7 +36,8 @@ import {AngularFireModule} from "@angular/fire";
     ReactiveFormsModule,
     FontAwesomeModule,
     BrowserAnimationsModule,
-    AngularFireModule.initializeApp( environment.firebase),
+    AngularFireModule.initializeApp(environment.firebase),
+    MatMenuModule,
 
   ],
   providers: [],

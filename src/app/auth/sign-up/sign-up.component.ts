@@ -1,10 +1,9 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, NgZone, OnInit} from '@angular/core';
 import {FormControl, FormGroup, Validators} from "@angular/forms";
-import {SharedAuthService} from "../shared-auth.service";
+import {SharedAuthService} from "../../shared/services/shared-auth.service";
 import {Router} from "@angular/router";
-import {MatDialog} from "@angular/material/dialog";
-import {DialogComponent} from "../../shared/components/dialog/dialog.component";
-import {user} from "../interfaces";
+import {ErrServiceService} from "../../shared/services/err-service.service";
+import {faCodeBranch} from "@fortawesome/free-solid-svg-icons";
 
 @Component({
   selector: 'app-sign-up',
@@ -18,18 +17,15 @@ export class SignUpComponent implements OnInit {
     password: new FormControl(null, [Validators.required, Validators.minLength(8)]),
   })
 
-  submitted: boolean = false;
+  isSubmitted: boolean = false;
+  gitIcon = faCodeBranch;
 
 
-  constructor(private auth: SharedAuthService,
+  constructor(private authService: SharedAuthService,
               private router: Router,
-              private dialog: MatDialog,) {
+              private errService: ErrServiceService,
+              private ngZone: NgZone,) {
   }
-
-  openDialog(): void{
-    this.dialog.open(DialogComponent);
-  }
-
 
   ngOnInit(): void {
   }
@@ -38,27 +34,53 @@ export class SignUpComponent implements OnInit {
     if (this.form.invalid) {
       return
     }
-    this.submitted = true
+    this.isSubmitted = true
 
-
-    let user:user = {
-      email: this.form.value.email,
-      password: this.form.value.password
-    }
-
-
-    this.auth.signUp(user.email, user.password)
+    this.authService.signUp(this.form.value.email, this.form.value.password)
       .then(res => {
         this.form.reset()
         this.router.navigate(['/sign-in'])
+        this.isSubmitted = false
+
       })
       .catch(err => {
-        this.auth.errMsg = err.message
-        this.openDialog()
-        this.form.reset()
+        this.errService.errMsg = err.message
+        this.errService.openDialog()
+        this.isSubmitted = false
+
       }
     )
 
+  }
+
+  signInGoogle() {
+    this.authService.signInWithGoogle()
+      .then(r => {
+          this.ngZone.run(()=> this.router.navigate(['/dashboard']))
+        }
+      )
+      .catch(err => {
+        this.errService.errMsg = err.message
+        this.errService.openDialog()
+      })
+  }
+
+  signInFacebook() {
+    this.authService.signInWithFacebook()
+      .then(r => this.ngZone.run(()=> this.router.navigate(['/dashboard'])))
+      .catch(err => {
+        this.errService.errMsg = err.message
+        this.errService.openDialog()
+      })
+  }
+
+  signInGithub() {
+    this.authService.signInWithGithub()
+      .then(r => this.ngZone.run(()=> this.router.navigate(['/dashboard'])))
+      .catch(err => {
+        this.errService.errMsg = err.message
+        this.errService.openDialog()
+      })
   }
 }
 

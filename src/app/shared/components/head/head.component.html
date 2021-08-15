@@ -1,14 +1,14 @@
 <mat-toolbar color="primary" class="navbar">
   <div>
 
-    <a mat-button style="font-size:30px" routerLink="/sign-in"><i class="fa fa-coffee"></i> StackClone</a>
+    <a mat-button class="font" routerLink="/dashboard"><i class="fa fa-coffee"></i> StackClone</a>
   </div>
   <div *ngIf="!auth.getUserInfo()">
     <a mat-button routerLink="/sign-in">Sign In</a>
     <a mat-button routerLink="/sign-up">Sign Up</a>
   </div>
   <div *ngIf="auth.getUserInfo()">
-    <a mat-button routerLink="/sign-in" (click)="logOut()">Sign Out</a>
+    <a mat-button (click)="logOut()">Sign Out</a>
   </div>
 
 </mat-toolbar>

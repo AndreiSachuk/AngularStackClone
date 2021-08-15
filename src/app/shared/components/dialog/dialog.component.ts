@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {SharedAuthService} from "../../../auth/shared-auth.service";
+import {ErrServiceService} from "../../services/err-service.service";
 
 @Component({
   selector: 'app-dialog',
@@ -9,7 +9,7 @@ import {SharedAuthService} from "../../../auth/shared-auth.service";
 export class DialogComponent implements OnInit {
 
 
-  constructor(public auth: SharedAuthService) { }
+  constructor(public errService: ErrServiceService) { }
 
 
 

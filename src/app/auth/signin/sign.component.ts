@@ -1,11 +1,9 @@
 import {Component, NgZone, OnInit} from '@angular/core';
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {faCodeBranch} from "@fortawesome/free-solid-svg-icons";
-import {SharedAuthService} from "../shared-auth.service";
+import {SharedAuthService} from "../../shared/services/shared-auth.service";
 import {Router} from "@angular/router";
-import {user} from "../interfaces";
-import {DialogComponent} from "../../shared/components/dialog/dialog.component";
-import {MatDialog} from "@angular/material/dialog";
+import {ErrServiceService} from "../../shared/services/err-service.service";
 
 @Component({
   selector: 'app-signin',
@@ -14,7 +12,7 @@ import {MatDialog} from "@angular/material/dialog";
 })
 export class SignComponent implements OnInit {
 
-  git = faCodeBranch;
+  gitIcon = faCodeBranch;
 
   form: FormGroup = new FormGroup({
     email: new FormControl(null, [Validators.required, Validators.email]),
@@ -22,39 +20,30 @@ export class SignComponent implements OnInit {
   })
 
 
-  submitted: boolean = false;
+  isSubmitted: boolean = false;
 
-  constructor(private auth: SharedAuthService,
+  constructor(private authService: SharedAuthService,
               private router: Router,
-              private dialog: MatDialog,
+              private errService: ErrServiceService,
               private ngZone: NgZone,
   ) {
   }
 
-  openDialog(){
-     this.dialog.open(DialogComponent);
-  }
-
   signIn(): void {
 
-    this.submitted = true
+    this.isSubmitted = true
 
-    let user: user = {
-      email: this.form.value.email,
-      password: this.form.value.password
-
-    }
-    this.auth.signInWithEmail(user.email, user.password)
+    this.authService.signInWithEmail(this.form.value.email, this.form.value.password)
       .then(res => {
         this.form.reset()
-        this.submitted = false
+        this.isSubmitted = false
         this.router.navigate(['/dashboard'])
       })
       .catch(err => {
-          this.form.reset()
-          this.submitted = false
-          this.auth.errMsg = err.message
-          this.openDialog()
+
+          this.isSubmitted = false
+          this.errService.errMsg = err.message
+          this.errService.openDialog()
         }
       )
   }
@@ -64,32 +53,32 @@ export class SignComponent implements OnInit {
   }
 
   signInGoogle() {
-    this.auth.signInWithGoogle()
+    this.authService.signInWithGoogle()
       .then(r => {
         this.ngZone.run(()=> this.router.navigate(['/dashboard']))
         }
       )
       .catch(err => {
-        this.auth.errMsg = err.message
-        this.openDialog()
+        this.errService.errMsg = err.message
+        this.errService.openDialog()
       })
   }
 
   signInFacebook() {
-    this.auth.signInWithFacebook()
+    this.authService.signInWithFacebook()
       .then(r => this.ngZone.run(()=> this.router.navigate(['/dashboard'])))
       .catch(err => {
-        this.auth.errMsg = err.message
-        this.openDialog()
+        this.errService.errMsg = err.message
+        this.errService.openDialog()
       })
   }
 
   signInGithub() {
-    this.auth.signInWithGithub()
+    this.authService.signInWithGithub()
       .then(r => this.ngZone.run(()=> this.router.navigate(['/dashboard'])))
       .catch(err => {
-        this.auth.errMsg = err.message
-        this.openDialog()
+        this.errService.errMsg = err.message
+        this.errService.openDialog()
       })
   }
 }

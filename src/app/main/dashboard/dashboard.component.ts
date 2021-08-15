@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import {SharedAuthService} from "../../auth/shared-auth.service";
-import {userInfo} from "../../auth/interfaces";
+import {SharedAuthService} from "../../shared/services/shared-auth.service";
+
 
 
 @Component({
@@ -11,13 +11,9 @@ import {userInfo} from "../../auth/interfaces";
 export class DashboardComponent implements OnInit {
 
 
-  constructor(private auth: SharedAuthService) { }
+  constructor(private authService: SharedAuthService) { }
 
-  userInfo: userInfo = this.auth.getUserInfo()
-  public name = this.userInfo.name
-  public uid = this.userInfo.uid
-  public email = this.userInfo.email
-  public photoUrl = this.userInfo.photoUrl
+  userInfo = this.authService.getUserInfo()
 
   ngOnInit(): void {
 

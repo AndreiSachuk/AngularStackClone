@@ -1,14 +1,12 @@
 <h1 class="center">User Profile</h1>
 
-<div *ngIf="userInfo" class="center">
-
-      <img src="{{(this.photoUrl) ? this.photoUrl : 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTcZsL6PVn0SNiabAKz7js0QknS2ilJam19QQ&usqp=CAU'}}"
-           alt="{{this.name}}">
+<div class="center">
+      <img src="{{(userInfo.photoUrl) || 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTcZsL6PVn0SNiabAKz7js0QknS2ilJam19QQ&usqp=CAU'}}"
+           alt="{{userInfo.name || userInfo.email}}">
       <div >
-        <h1>Hello: <strong>{{(this.name) ? this.name : 'User'}}</strong></h1>
-        <p>User ID: <strong>{{this.uid}}</strong></p>
-        <p>Email: <strong>{{this.email}}</strong></p>
-
+        <h1>Hello: <strong>{{(userInfo.name) || 'User'}}</strong></h1>
+        <p>User ID: <strong>{{userInfo.uid}}</strong></p>
+        <p>Email: <strong>{{userInfo.email}}</strong></p>
   </div>
 </div>
 

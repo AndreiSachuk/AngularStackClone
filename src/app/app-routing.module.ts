@@ -4,8 +4,8 @@ import {HeadComponent} from "./shared/components/head/head.component";
 import {SignComponent} from "./auth/signin/sign.component";
 import {DashboardComponent} from "./main/dashboard/dashboard.component";
 import {SignUpComponent} from "./auth/sign-up/sign-up.component";
-import {AuthGuard} from "./auth/auth-guard.service";
-import {LogGuard} from "./auth/log.guard";
+import {AuthGuard} from "./shared/services/auth-guard.service";
+import {LogGuard} from "./shared/services/log.guard";
 
 
 

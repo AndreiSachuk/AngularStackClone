@@ -8,8 +8,8 @@ import {map} from "rxjs/operators";
   providedIn: 'root'
 })
 export class LogGuard implements CanActivate {
-  constructor( private auth: SharedAuthService,
-                private route: Router) {
+  constructor( private authService: SharedAuthService,
+               private routerService: Router) {
   }
 
 
@@ -17,10 +17,10 @@ export class LogGuard implements CanActivate {
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Promise<boolean | UrlTree> | Observable<boolean | UrlTree> | boolean | UrlTree {
     {
-      return this.auth.checkAuth().pipe(
+      return this.authService.checkAuth().pipe(
         map((user) => {
           if (!!user) {
-            this.route.navigate(['/dashboard'])
+            this.routerService.navigate(['/dashboard'])
             return false
 
           }

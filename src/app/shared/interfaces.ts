@@ -1,9 +1,5 @@
-export interface user {
-  email: string;
-  password: string;
-}
 
-export interface userInfo{
+export interface UserInfo {
   uid?: string;
   email?: string;
   name?:string;

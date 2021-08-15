@@ -1,8 +1,7 @@
 
 <div class="signin__cont">
   <form [formGroup]="form" (ngSubmit)="signIn()" class="signin__form">
-    <a mat-button style="font-size:30px" routerLink="/sign-in"><i class="fa fa-coffee"></i> StackClone</a>
-    <br><br>
+    <a mat-button class="signin__button-font signin__margin" routerLink="/sign-in"><i class="fa fa-coffee"></i> StackClone</a>
     <h2>Login with email</h2>
 
     <div class="signin__form-part" >
@@ -26,14 +25,13 @@
     </div>
 
 
-    <button type="submit" mat-raised-button color="primary" [disabled]="form.invalid || submitted"> Log In with email</button>
-    <br>
-    <br>
+    <button type="submit" mat-raised-button color="primary" class="signin__margin" [disabled]="form.invalid || isSubmitted"> Log In with email</button>
+
 
     <h2>Login with</h2>
 
     <div class="signin__social">
-      <a mat-raised-button color="primary" class="signin__social-media" (click)="signInGithub()"><fa-icon [icon]="git"></fa-icon> GIT</a>
+      <a mat-raised-button color="primary" class="signin__social-media" (click)="signInGithub()"><fa-icon [icon]="gitIcon"></fa-icon> GIT</a>
       <a mat-raised-button color="primary" class="signin__social-media" (click)="signInFacebook()"><mat-icon>facebook</mat-icon> FaceBook</a>
       <a mat-raised-button color="primary" class="signin__social-media" (click)="signInGoogle()"><mat-icon>account_circle</mat-icon> Google</a>
     </div>

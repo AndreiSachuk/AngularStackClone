@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {SharedAuthService} from "../../../auth/shared-auth.service";
+import {SharedAuthService} from "../../services/shared-auth.service";
 import {Router} from "@angular/router";
 
 @Component({

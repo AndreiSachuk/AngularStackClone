@@ -6,6 +6,7 @@ import {DashboardComponent} from "./main/dashboard/dashboard.component";
 import {SignUpComponent} from "./auth/sign-up/sign-up.component";
 import {AuthGuard} from "./shared/services/auth-guard.service";
 import {LogGuard} from "./shared/services/log.guard";
+import {UserComponent} from "./main/user/user.component";
 
 
 
@@ -16,6 +17,7 @@ const routes: Routes = [
       {path: 'sign-in', component: SignComponent, canActivate: [LogGuard]},
       {path: 'sign-up', component: SignUpComponent,  canActivate: [LogGuard]},
       {path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard], },
+      {path: 'user', component: UserComponent, canActivate: [AuthGuard], },
     ]
   },
 ];

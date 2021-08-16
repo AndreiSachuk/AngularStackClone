@@ -1,13 +1,32 @@
-<h1 class="center">User Profile</h1>
+<mat-toolbar color="primary" class="navbar">
+  <div>
 
-<div class="center">
-      <img src="{{(userInfo.photoUrl) || 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTcZsL6PVn0SNiabAKz7js0QknS2ilJam19QQ&usqp=CAU'}}"
-           alt="{{userInfo.name || userInfo.email}}">
-      <div >
-        <h1>Hello: <strong>{{(userInfo.name) || 'User'}}</strong></h1>
-        <p>User ID: <strong>{{userInfo.uid}}</strong></p>
-        <p>Email: <strong>{{userInfo.email}}</strong></p>
+    <button mat-button [matMenuTriggerFor]="filters">Filters</button>
+    <mat-menu #filters="matMenu">
+      <button mat-menu-item [matMenuTriggerFor]="vertebrates">Vertebrates</button>
+    </mat-menu>
+
+    <mat-menu #vertebrates="matMenu">
+
+              <mat-select [formControl]="categories" multiple>
+                <mat-option *ngFor="let category of categoriesList" [value]="category">{{category}}</mat-option>
+              </mat-select>
+
+            <button mat-menu-item>Item 2</button>
+    </mat-menu>
+
+
+
+
   </div>
-</div>
+  <div>
 
+цдвалптжцва
+  </div>
+  <div>
+  settings
+  </div>
 
+</mat-toolbar>
+
+<router-outlet> </router-outlet>

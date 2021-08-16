@@ -17,6 +17,9 @@ import {environment} from "../environments/environment";
 
 import {AngularFireModule} from "@angular/fire";
 import {MatMenuModule} from "@angular/material/menu";
+import { UserComponent } from './main/user/user.component';
+import { QuestionPageComponent } from './main/question-page/question-page.component';
+import { AddQuestionComponent } from './main/add-question/add-question.component';
 
 @NgModule({
   declarations: [
@@ -26,6 +29,9 @@ import {MatMenuModule} from "@angular/material/menu";
     HeadComponent,
     SignUpComponent,
     DialogComponent,
+    UserComponent,
+    QuestionPageComponent,
+    AddQuestionComponent,
   ],
   entryComponents:[DialogComponent],
   imports: [

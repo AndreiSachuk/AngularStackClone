@@ -11,12 +11,11 @@
     <a mat-button routerLink="/sign-up">ADD QUESTION</a>
     <button mat-button [matMenuTriggerFor]="menu">{{userInfo.name||'User'}}</button>
     <mat-menu #menu="matMenu">
-      <button mat-menu-item>User Info</button>
+      <button mat-menu-item routerLink="/user">User Info</button>
       <button mat-menu-item (click)="logOut()">Sign Out</button>
     </mat-menu>
 
   </div>
-
 </mat-toolbar>
 
 <router-outlet> </router-outlet>

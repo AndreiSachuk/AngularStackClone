@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {SharedAuthService} from "../../shared/services/shared-auth.service";
+import {FormControl} from "@angular/forms";
 
 
 
@@ -15,6 +16,8 @@ export class DashboardComponent implements OnInit {
 
   userInfo = this.authService.getUserInfo()
 
+  categories = new FormControl();
+  categoriesList: string[] = ['Extra cheese', 'Mushroom', 'Onion', 'Pepperoni', 'Sausage', 'Tomato'];
   ngOnInit(): void {
 
 

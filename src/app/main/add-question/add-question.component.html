@@ -17,20 +17,15 @@
     </div>
   </div>
 
-
-  <div>
-    <span > Category:
-      <ul >
-        <li *ngFor="let category of categoryList" >
-          <mat-checkbox formControlName="tags" [(ngModel)]="category.isChecked" >
-            {{category.category}}
-          </mat-checkbox>
-        </li>
-      </ul>
-    </span>
-
+  <div class="question__margin">
+    <label for="tags">Categories:</label>
+    <div *ngFor="let category of categoryList" class="question__tags">
+      <label >
+        <input class="question__input" type="checkbox" [value]="category.category" (change)="onCheckboxChange($event) " />
+        {{category.category}}
+      </label>
+    </div>
   </div>
-
 
   <button type="submit" mat-raised-button color="primary"
           [disabled]="formAddQuestion.invalid || isSubmitted"> Send question

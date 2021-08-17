@@ -1,5 +1,5 @@
 import {Component,  OnInit} from '@angular/core';
-import {FormControl, FormGroup, Validators} from "@angular/forms";
+import {FormArray, FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 import * as myGlobal from "../../shared/constants";
 import {SharedAuthService} from "../../shared/services/shared-auth.service";
 import {TransferQuestionsService} from "../../shared/services/transfer-questions.service";
@@ -19,19 +19,21 @@ export class AddQuestionComponent implements OnInit {
   formAddQuestion: FormGroup
   isSubmitted = false
   categoryList : { category: string, isChecked: boolean }[] = []
+  checkedCategories: string[] = []
 
 
   constructor(private authService: SharedAuthService,
               private questionService: TransferQuestionsService,
               private route: Router,
-              private errService: ErrService) {
+              private errService: ErrService,
+              private formBuilder: FormBuilder) {
   }
 
   ngOnInit(): void {
-    this.formAddQuestion = new FormGroup({
+    this.formAddQuestion = this.formBuilder.group({
       title: new FormControl(null, Validators.required),
       text: new FormControl(null, Validators.required),
-      tags: new FormControl(null),
+      tags: this.formBuilder.array([], Validators.required)
     })
     for (let category of myGlobal.categories)
     {
@@ -39,26 +41,32 @@ export class AddQuestionComponent implements OnInit {
     }
   }
 
+  onCheckboxChange(e: any) {
+    const checkedCategories: FormArray = this.formAddQuestion.get('tags') as FormArray;
+
+    if (e.target.checked) {
+      checkedCategories.push(new FormControl(e.target.value));
+    } else {
+      const index = checkedCategories.controls.findIndex(x => x.value === e.target.value);
+      checkedCategories.removeAt(index);
+    }
+    this.checkedCategories=checkedCategories.value
+  }
 
   submit() {
-
-    let checkedCategories: string[]
-
-    checkedCategories = this.categoryList.filter(category => category.isChecked).map(category => category.category)
 
     if (this.formAddQuestion.invalid){
       return
     }
-    if (checkedCategories.length===0){
+    if (!this.checkedCategories.length){
       this.errService.openDialog('Select at least 1 category')
       return
     }
 
-
     const question: Question = {
       title: this.formAddQuestion.value.title,
       text: this.formAddQuestion.value.text,
-      tags: checkedCategories,
+      tags: this.checkedCategories,
       date: new Date().getTime(),
       user: this.authService.getUserInfo().email,
       isApproved: false,
@@ -73,4 +81,6 @@ export class AddQuestionComponent implements OnInit {
           this.errService.openDialog(err.error.error)
         })
   }
+
+
 }

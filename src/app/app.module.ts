@@ -22,6 +22,7 @@ import {QuestionPageComponent} from './main/question-page/question-page.componen
 import {AddQuestionComponent} from './main/add-question/add-question.component';
 import {QuillModule} from "ngx-quill";
 import {HttpClientModule} from "@angular/common/http";
+import { ServiceWorkerModule } from '@angular/service-worker';
 
 
 @NgModule({
@@ -49,7 +50,13 @@ import {HttpClientModule} from "@angular/common/http";
     AngularFireModule.initializeApp(environment.firebase),
     MatMenuModule,
     QuillModule,
-    HttpClientModule
+    HttpClientModule,
+    ServiceWorkerModule.register('ngsw-worker.js', {
+      enabled: environment.production,
+      // Register the ServiceWorker as soon as the app is stable
+      // or after 30 seconds (whichever comes first).
+      registrationStrategy: 'registerWhenStable:30000'
+    })
 
   ],
   providers: [],

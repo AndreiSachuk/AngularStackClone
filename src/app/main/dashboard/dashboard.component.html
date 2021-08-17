@@ -21,12 +21,24 @@
   </div>
   <div>
 
-цдвалптжцва
+  field2
   </div>
   <div>
   settings
   </div>
 
 </mat-toolbar>
+
+<div *ngIf="questions$ | async as questions">
+  <div *ngFor="let question of questions">
+    {{question}}
+  </div>
+</div>
+
+<div class="add-button">
+  <button mat-fab aria-label="Add question" routerLink="/add-question">
+    <mat-icon>add</mat-icon>
+  </button>
+</div>
 
 <router-outlet> </router-outlet>

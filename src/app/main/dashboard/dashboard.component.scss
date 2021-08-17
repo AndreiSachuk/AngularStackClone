@@ -5,7 +5,8 @@
 .navbar{
   display: flex;
   justify-content: space-between;
-  height: 5vh;
+  min-height: 5vh;
+  height: auto;
   margin-bottom: 5px;
 }
 span {
@@ -15,3 +16,10 @@ span {
 .font{
   font-size:30px
 }
+
+.add-button{
+  position: fixed;
+  bottom: 10px;
+  right: 10px;
+}
+

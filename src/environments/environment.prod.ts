@@ -8,5 +8,6 @@ export const environment = {
     messagingSenderId: "1047667895592",
     appId: "1:1047667895592:web:50a2907611c78ffe48f41d",
     measurementId: "G-V3Z6R6TWVZ"
-  }
+  },
+  fbDbQuestUrl: 'https://stackclone-first-default-rtdb.europe-west1.firebasedatabase.app/'
 };

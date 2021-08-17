@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {ErrServiceService} from "../../services/err-service.service";
+import {ErrService} from "../../services/err.service";
 
 @Component({
   selector: 'app-dialog',
@@ -9,7 +9,7 @@ import {ErrServiceService} from "../../services/err-service.service";
 export class DialogComponent implements OnInit {
 
 
-  constructor(public errService: ErrServiceService) { }
+  constructor(public errService: ErrService) { }
 
 
 

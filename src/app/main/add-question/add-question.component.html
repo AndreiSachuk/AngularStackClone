@@ -1,1 +1,39 @@
-<p>add-question works!</p>
+<form [formGroup]="formAddQuestion" (ngSubmit)="submit()" class="question__form">
+  <h2>Ask your question</h2>
+
+  <div class="question__margin">
+    <label for="title"><sub>Title*</sub></label>
+    <input formControlName="title" id="title" placeholder="Enter title">
+    <div *ngIf="formAddQuestion.controls['title'].touched && formAddQuestion.controls['title'].invalid">
+      <small *ngIf="formAddQuestion.controls['title'].errors?.required">Enter title</small>
+    </div>
+  </div>
+
+  <div class="question__margin">
+    <label for="text" ><sub>Text*</sub></label>
+    <quill-editor formControlName="text" id="text"></quill-editor>
+    <div *ngIf="formAddQuestion.controls['text'].touched && formAddQuestion.controls['text'].invalid">
+      <small *ngIf="formAddQuestion.controls['text'].errors?.required">Enter text</small>
+    </div>
+  </div>
+
+
+  <div>
+    <span > Category:
+      <ul >
+        <li *ngFor="let category of categoryList" >
+          <mat-checkbox formControlName="tags" [(ngModel)]="category.isChecked" >
+            {{category.category}}
+          </mat-checkbox>
+        </li>
+      </ul>
+    </span>
+
+  </div>
+
+
+  <button type="submit" mat-raised-button color="primary"
+          [disabled]="formAddQuestion.invalid || isSubmitted"> Send question
+  </button>
+
+</form>

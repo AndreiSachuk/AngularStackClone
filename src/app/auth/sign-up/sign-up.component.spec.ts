@@ -19,7 +19,7 @@ describe('SignUpComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  it('should createQuestion', () => {
     expect(component).toBeTruthy();
   });
 });

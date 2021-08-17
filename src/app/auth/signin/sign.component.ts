@@ -3,7 +3,7 @@ import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {faCodeBranch} from "@fortawesome/free-solid-svg-icons";
 import {SharedAuthService} from "../../shared/services/shared-auth.service";
 import {Router} from "@angular/router";
-import {ErrServiceService} from "../../shared/services/err-service.service";
+import {ErrService} from "../../shared/services/err.service";
 
 @Component({
   selector: 'app-signin',
@@ -24,13 +24,15 @@ export class SignComponent implements OnInit {
 
   constructor(private authService: SharedAuthService,
               private router: Router,
-              private errService: ErrServiceService,
+              private errService: ErrService,
               private ngZone: NgZone,
   ) {
   }
 
   signIn(): void {
-
+    if (this.form.invalid) {
+      return
+    }
     this.isSubmitted = true
 
     this.authService.signInWithEmail(this.form.value.email, this.form.value.password)
@@ -40,10 +42,9 @@ export class SignComponent implements OnInit {
         this.router.navigate(['/dashboard'])
       })
       .catch(err => {
-
+        this.form.controls['password'].reset()
           this.isSubmitted = false
-          this.errService.errMsg = err.message
-          this.errService.openDialog()
+          this.errService.openDialog(err.message)
         }
       )
   }
@@ -59,8 +60,7 @@ export class SignComponent implements OnInit {
         }
       )
       .catch(err => {
-        this.errService.errMsg = err.message
-        this.errService.openDialog()
+        this.errService.openDialog(err.message)
       })
   }
 
@@ -68,8 +68,7 @@ export class SignComponent implements OnInit {
     this.authService.signInWithFacebook()
       .then(r => this.ngZone.run(()=> this.router.navigate(['/dashboard'])))
       .catch(err => {
-        this.errService.errMsg = err.message
-        this.errService.openDialog()
+        this.errService.openDialog(err.message)
       })
   }
 
@@ -77,8 +76,7 @@ export class SignComponent implements OnInit {
     this.authService.signInWithGithub()
       .then(r => this.ngZone.run(()=> this.router.navigate(['/dashboard'])))
       .catch(err => {
-        this.errService.errMsg = err.message
-        this.errService.openDialog()
+        this.errService.openDialog(err.message)
       })
   }
 }

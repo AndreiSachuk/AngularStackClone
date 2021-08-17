@@ -2,7 +2,7 @@ import {Component, NgZone, OnInit} from '@angular/core';
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {SharedAuthService} from "../../shared/services/shared-auth.service";
 import {Router} from "@angular/router";
-import {ErrServiceService} from "../../shared/services/err-service.service";
+import {ErrService} from "../../shared/services/err.service";
 import {faCodeBranch} from "@fortawesome/free-solid-svg-icons";
 
 @Component({
@@ -23,7 +23,7 @@ export class SignUpComponent implements OnInit {
 
   constructor(private authService: SharedAuthService,
               private router: Router,
-              private errService: ErrServiceService,
+              private errService: ErrService,
               private ngZone: NgZone,) {
   }
 
@@ -44,8 +44,7 @@ export class SignUpComponent implements OnInit {
 
       })
       .catch(err => {
-        this.errService.errMsg = err.message
-        this.errService.openDialog()
+        this.errService.openDialog(err.message)
         this.isSubmitted = false
 
       }
@@ -60,8 +59,7 @@ export class SignUpComponent implements OnInit {
         }
       )
       .catch(err => {
-        this.errService.errMsg = err.message
-        this.errService.openDialog()
+        this.errService.openDialog(err.message)
       })
   }
 
@@ -69,8 +67,7 @@ export class SignUpComponent implements OnInit {
     this.authService.signInWithFacebook()
       .then(r => this.ngZone.run(()=> this.router.navigate(['/dashboard'])))
       .catch(err => {
-        this.errService.errMsg = err.message
-        this.errService.openDialog()
+        this.errService.openDialog(err.message)
       })
   }
 
@@ -78,8 +75,7 @@ export class SignUpComponent implements OnInit {
     this.authService.signInWithGithub()
       .then(r => this.ngZone.run(()=> this.router.navigate(['/dashboard'])))
       .catch(err => {
-        this.errService.errMsg = err.message
-        this.errService.openDialog()
+        this.errService.openDialog(err.message)
       })
   }
 }

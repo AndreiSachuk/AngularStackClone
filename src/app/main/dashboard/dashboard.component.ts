@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import {SharedAuthService} from "../../shared/services/shared-auth.service";
-import {FormControl, FormGroup} from "@angular/forms";
+import {FormControl} from "@angular/forms";
 import {TransferQuestionsService} from "../../shared/services/transfer-questions.service";
 import { Observable } from 'rxjs';
+import {Question} from "../../shared/interfaces";
 
 
 @Component({
@@ -12,24 +13,30 @@ import { Observable } from 'rxjs';
 })
 export class DashboardComponent implements OnInit {
 
-  questions$: Observable<string[]>
+  questions$: Observable<Question[]>
 
   constructor(private authService: SharedAuthService,
               private questionService: TransferQuestionsService) { }
 
   userInfo = this.authService.getUserInfo()
 
-
-  range = new FormGroup({
-    start: new FormControl(),
-    end: new FormControl()
-  });
+  questionForm = true
 
 
   categories = new FormControl();
   categoriesList: string[] = ['Extra cheese', 'Mushroom', 'Onion', 'Pepperoni', 'Sausage', 'Tomato'];
   ngOnInit(): void {
     this.questions$ = this.questionService.getAllQuestions()
+    this.questions$
+      .subscribe(res => {
+
+          // this.route.navigate(['/dashboard'])
+        },
+        // err =>{
+        //   this.errService.openDialog(err.error.error)
+        // }
+        )
+  // }
 
   }
 

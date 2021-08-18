@@ -6,7 +6,16 @@ export interface UserInfo {
   emailVerified?: boolean,
 }
 
+export interface Comments{
+  text: string,
+  date: number,
+  user: string,
+  isDecision: boolean,
+}
+
 export interface Question{
+  id?: string;
+  name?: string,
   title: string,
   text: string,
   tags: string[],
@@ -16,12 +25,16 @@ export interface Question{
   comments: Array<Comments>
 }
 
-export interface Comments{
-  text: string,
-  date: Date,
-  user: string,
-  isDecision: boolean,
+
+
+export interface FbResponse{
+  name?: string
 }
 
-
+export interface Tile {
+  color: string;
+  cols: number;
+  rows: number;
+  text: string;
+}
 

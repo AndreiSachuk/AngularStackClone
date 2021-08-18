@@ -1,0 +1,42 @@
+<div *ngIf="formEditQuestion; else loading">
+
+  <form [formGroup]="formEditQuestion" (ngSubmit)="submit()" class="question__form">
+    <h2>Edit your question</h2>
+
+    <div class="question__margin">
+      <label for="title"><sub>Title*</sub></label>
+      <input formControlName="title" id="title" placeholder="Enter title">
+      <div *ngIf="formEditQuestion.controls['title'].touched && formEditQuestion.controls['title'].invalid">
+        <small *ngIf="formEditQuestion.controls['title'].errors?.required">Enter title</small>
+      </div>
+    </div>
+
+    <div class="question__margin">
+      <label for="text" ><sub>Text*</sub></label>
+      <quill-editor formControlName="text" id="text"></quill-editor>
+      <div *ngIf="formEditQuestion.controls['text'].touched && formEditQuestion.controls['text'].invalid">
+        <small *ngIf="formEditQuestion.controls['text'].errors?.required">Enter text</small>
+      </div>
+    </div>
+
+    <div class="question__margin">
+      <label for="tags">Categories:</label>
+      <div *ngFor="let category of categoryList" class="question__tags">
+        <label >
+          <input class="question__input" type="checkbox" id="tags" [checked]="category.isChecked" [value]="category.category" (change)="onCheckboxChange($event) " />
+          {{category.category}}
+        </label>
+      </div>
+    </div>
+
+    <button type="submit" mat-raised-button color="primary"
+            [disabled]="formEditQuestion.invalid || isSubmitted"> Update question
+    </button>
+
+  </form>
+
+</div>
+<ng-template #loading style="text-align: center">
+  <mat-spinner></mat-spinner>
+</ng-template>
+

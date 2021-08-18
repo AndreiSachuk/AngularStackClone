@@ -1,17 +1,74 @@
-<!--<form [formGroup]="formAddQuestion" (ngSubmit)="submit()" class="signin__form">-->
-<!--  <h2>Login with email</h2>-->
+<mat-card class="mat-elevation-z0 question__container" *ngIf="question$ | async as question; else loading">
+  <mat-card-content>
+    <div style="display: flex; justify-content: space-between">
+      <div>{{question.user}}</div>
+      <div>{{question.date | date:'medium'}}</div>
+    </div>
 
-<!--  <div class="" >-->
-<!--    <label for="title">Title </label>-->
-<!--    <input type="title" formControlName="title" id = title placeholder="Title">-->
-<!--    <div *ngIf="formAddQuestion.controls['title'].touched && formAddQuestion.controls['title'].invalid">-->
-<!--      <small *ngIf="formAddQuestion.controls['title'].errors?.required">Enter title</small>-->
-<!--    </div>-->
-<!--  </div>-->
+    <mat-card-title>{{question.title}}</mat-card-title>
+
+  </mat-card-content>
+  <mat-card-content>
+    <div [innerHtml]='sanitaizer.bypassSecurityTrustHtml(question.text)'></div>
+  </mat-card-content>
+  <mat-card-actions style="display: flex;  justify-content: space-between; align-items: center">
+    <div>
+      {{question.tags}}
+    </div>
+    <div>
+      <button mat-button (click)="question.isApproved=true; " [disabled]="question.isApproved">Approve</button>
+      <button mat-button>Delete</button>
+      <!--    !!!!!!!!!!!-->
+      <button mat-button [routerLink]="['/question', question.id,'edit']">Edit</button>
+    </div>
+  </mat-card-actions>
+
+  <mat-card class="mat-elevation-z0 question__container">
+    <mat-card-content>
+      Comments
+    </mat-card-content>
+    <form [formGroup]="formAddComment" (ngSubmit)="addComment()" class="question__form">
+      <div>
+        <div class="question__margin">
+          <label for="text"><sub>Add your comment</sub></label>
+          <quill-editor formControlName="text" id="text"></quill-editor>
+          <div *ngIf="formAddComment.controls['text'].touched && formAddComment.controls['text'].invalid">
+            <small *ngIf="formAddComment.controls['text'].errors?.required">Enter your comment</small>
+          </div>
+        </div>
+        <button type="submit" mat-raised-button color="primary"
+                [disabled]="formAddComment.invalid || isSubmitted"> Add comment
+        </button>
+      </div>
+    </form>
 
 
+    <div *ngFor="let comment of question.comments">
+      <mat-card style="display: flex; text-align: center; margin: 2px">
+        <div style=" width:30%;">
+          {{comment.user}}<br>
+          {{comment.date | date:'medium'}}
+        </div>
+        <div style=" width:60%; " [innerHTML]="sanitaizer.bypassSecurityTrustHtml(comment.text)">
 
-<!--  <button type="submit" mat-raised-button color="primary" class="signin__margin" [disabled]="formAddQuestion.invalid || isSubmitted"> Log In with email</button>-->
+        </div>
 
-<!--</form>-->
-<p>Question Page Component</p>
+        <div style=" width:10%;">
+          {{comment.isDecision}}
+
+        </div>
+
+
+      </mat-card>
+
+    </div>
+
+
+  </mat-card>
+
+</mat-card>
+
+
+<ng-template #loading style="text-align: center">
+  <mat-spinner></mat-spinner>
+</ng-template>

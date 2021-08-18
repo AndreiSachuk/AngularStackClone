@@ -8,6 +8,8 @@ import {AuthGuard} from "./shared/services/auth-guard.service";
 import {LogGuard} from "./shared/services/log.guard";
 import {UserComponent} from "./main/user/user.component";
 import {AddQuestionComponent} from "./main/add-question/add-question.component";
+import {QuestionPageComponent} from "./main/question-page/question-page.component";
+import {EditQuestionComponent} from "./main/edit-question/edit-question.component";
 
 
 
@@ -20,6 +22,9 @@ const routes: Routes = [
       {path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard], },
       {path: 'user', component: UserComponent, canActivate: [AuthGuard], },
       {path: 'add-question', component: AddQuestionComponent, canActivate: [AuthGuard], },
+      {path: 'question/:id', component: QuestionPageComponent, canActivate: [AuthGuard], },
+      {path: 'question/:id/edit', component: EditQuestionComponent, canActivate: [AuthGuard], },
+
     ]
   },
 ];

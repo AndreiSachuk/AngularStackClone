@@ -21,7 +21,7 @@
     <label for="tags">Categories:</label>
     <div *ngFor="let category of categoryList" class="question__tags">
       <label >
-        <input class="question__input" type="checkbox" [value]="category.category" (change)="onCheckboxChange($event) " />
+        <input class="question__input" type="checkbox" id="tags" [value]="category.category" (change)="onCheckboxChange($event) " />
         {{category.category}}
       </label>
     </div>

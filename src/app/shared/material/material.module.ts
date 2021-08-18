@@ -8,6 +8,9 @@ import {MatSelectModule} from "@angular/material/select";
 import {MatExpansionModule} from "@angular/material/expansion";
 import {MatDatepickerModule} from "@angular/material/datepicker";
 import {MatCheckboxModule} from "@angular/material/checkbox";
+import {MatCardModule} from "@angular/material/card";
+import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
+import {MatGridListModule} from "@angular/material/grid-list";
 
 const material = [
   MatButtonModule,
@@ -18,7 +21,10 @@ const material = [
   MatSelectModule,
   MatExpansionModule,
   MatDatepickerModule,
-  MatCheckboxModule
+  MatCheckboxModule,
+  MatCardModule,
+  MatProgressSpinnerModule,
+  MatGridListModule
 ]
 
 @NgModule({

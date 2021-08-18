@@ -1,0 +1,17 @@
+<mat-card class="mat-elevation-z4">
+  <mat-card-header>
+    <mat-card-title>{{question.title}}</mat-card-title>
+    <mat-card-subtitle>{{question.date | date:'medium'}}</mat-card-subtitle>
+  </mat-card-header>
+<!--  <mat-card-content  >-->
+<!--    <div [innerHtml]='sanitaizer.bypassSecurityTrustHtml(question.text)'></div>-->
+<!--  </mat-card-content>-->
+  <mat-card-content>
+    {{question.tags}}
+  </mat-card-content>
+  <mat-card-actions style="margin: auto;">
+    <button mat-button (click)="question.isApproved=true; " [disabled]="question.isApproved">Approve</button>
+    <button mat-button>Delete</button>
+    <button mat-button [routerLink]="['/question', question.id]">Open</button>
+  </mat-card-actions>
+</mat-card>

@@ -23,6 +23,9 @@ import {AddQuestionComponent} from './main/add-question/add-question.component';
 import {QuillModule} from "ngx-quill";
 import {HttpClientModule} from "@angular/common/http";
 import { ServiceWorkerModule } from '@angular/service-worker';
+import { QuestionComponent } from './main/question/question.component';
+import {FlexLayoutModule} from "@angular/flex-layout";
+import { EditQuestionComponent } from './main/edit-question/edit-question.component';
 
 
 @NgModule({
@@ -36,6 +39,8 @@ import { ServiceWorkerModule } from '@angular/service-worker';
     UserComponent,
     QuestionPageComponent,
     AddQuestionComponent,
+    QuestionComponent,
+    EditQuestionComponent,
 
   ],
   entryComponents: [DialogComponent],
@@ -51,6 +56,7 @@ import { ServiceWorkerModule } from '@angular/service-worker';
     MatMenuModule,
     QuillModule,
     HttpClientModule,
+    FlexLayoutModule,
     ServiceWorkerModule.register('ngsw-worker.js', {
       enabled: environment.production,
       // Register the ServiceWorker as soon as the app is stable

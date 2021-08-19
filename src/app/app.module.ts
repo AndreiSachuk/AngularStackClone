@@ -25,7 +25,7 @@ import {HttpClientModule} from "@angular/common/http";
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { QuestionComponent } from './main/question/question.component';
 import {FlexLayoutModule} from "@angular/flex-layout";
-import { EditQuestionComponent } from './main/edit-question/edit-question.component';
+import { EditQuestionComponent} from './main/edit-question/edit-question.component';
 
 
 @NgModule({
@@ -57,6 +57,7 @@ import { EditQuestionComponent } from './main/edit-question/edit-question.compon
     QuillModule,
     HttpClientModule,
     FlexLayoutModule,
+
     ServiceWorkerModule.register('ngsw-worker.js', {
       enabled: environment.production,
       // Register the ServiceWorker as soon as the app is stable

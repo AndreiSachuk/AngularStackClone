@@ -3,9 +3,6 @@ import {SharedAuthService} from "../../shared/services/shared-auth.service";
 import {FormControl} from "@angular/forms";
 import {TransferQuestionsService} from "../../shared/services/transfer-questions.service";
 import { Observable } from 'rxjs';
-import {Question} from "../../shared/interfaces";
-
-
 
 @Component({
   selector: 'app-dashboard',
@@ -14,7 +11,7 @@ import {Question} from "../../shared/interfaces";
 })
 export class DashboardComponent implements OnInit {
 
-  questions$: Observable<Question[]>
+  questions$: Observable<any>
 
   constructor(private authService: SharedAuthService,
               private questionService: TransferQuestionsService,

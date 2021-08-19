@@ -2,6 +2,7 @@ export interface UserInfo {
   uid?: string;
   email?: string;
   name?:string;
+  displayName?: string;
   photoUrl?: string,
   emailVerified?: boolean,
 }

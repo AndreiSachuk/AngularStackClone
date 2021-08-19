@@ -4,6 +4,7 @@ import {SharedAuthService} from "../../shared/services/shared-auth.service";
 import {DomSanitizer} from "@angular/platform-browser";
 import {TransferQuestionsService} from "../../shared/services/transfer-questions.service";
 import {ActivatedRoute, Router} from "@angular/router";
+import {ErrService} from "../../shared/services/err.service";
 
 @Component({
   selector: 'app-question',
@@ -14,39 +15,34 @@ export class QuestionComponent implements OnInit {
 
   @Input() question: Question;
 
-
   constructor(private authService: SharedAuthService,
               public sanitaizer: DomSanitizer,
               private questionService: TransferQuestionsService,
               private route: ActivatedRoute,
-              private router: Router) {
+              private router: Router,
+              private errService: ErrService) {
   }
 
-  userInfo = this.authService.getUserInfo()
-
   ngOnInit(): void {
-
   }
 
   isApproved() {
     this.question.isApproved = true
-    this.questionService.updateQuestion(this.question, this.question.id).subscribe(
-      answer => console.log(answer)
+    this.questionService.patchQuestion({['isApproved']:this.question.isApproved}, this.question.id).subscribe(
+      answer => answer,
+      error => this.errService.openDialog(error)
     )
-  }
-
-  reloadComponent(url: string) {
-    this.router.routeReuseStrategy.shouldReuseRoute = () => false;
-    this.router.onSameUrlNavigation = 'reload';
-    this.router.navigate([url]);
   }
 
   deleteQuestion() {
     this.questionService.removeQuestion(this.question.id).subscribe(
       (t)=> {
-        this.reloadComponent('/dashboard')
+        this.questionService.getAllQuestions().subscribe(
+          ()=>this.router.navigate(['/dashboard']),
+          (error:string) => this.errService.openDialog(error)
+        )
       },
-      error => console.log(error)
+      error => this.errService.openDialog(error)
     )
   }
 }

@@ -1,6 +1,21 @@
 <div *ngIf="formEditQuestion; else loading">
 
   <form [formGroup]="formEditQuestion" (ngSubmit)="submit()" class="question__form">
+
+    <mat-card-content>
+      <div style="display: flex; justify-content: space-between">
+        <div>
+          <button mat-raised-button (click)="backClicked() ;" >Back</button>
+        </div>
+
+        <div>{{question.user}}</div>
+        <div>{{question.date | date:'medium'}}</div>
+      </div>
+
+      <mat-card-title>{{question.title}}</mat-card-title>
+
+    </mat-card-content>
+
     <h2>Edit your question</h2>
 
     <div class="question__margin">

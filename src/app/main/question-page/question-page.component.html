@@ -3,6 +3,10 @@
   <mat-card class="mat-elevation-z0 " *ngIf="question$ | async as question; else loading">
     <mat-card-content>
       <div style="display: flex; justify-content: space-between">
+        <div>
+          <button mat-raised-button routerLink='/dashboard' >Back</button>
+        </div>
+
         <div>{{question.user}}</div>
         <div>{{question.date | date:'medium'}}</div>
       </div>

@@ -7,90 +7,97 @@ import {Question} from "../../shared/interfaces";
 import {SharedAuthService} from "../../shared/services/shared-auth.service";
 import {ErrService} from "../../shared/services/err.service";
 import * as myGlobal from "../../shared/constants";
+import {Location} from "@angular/common";
 
 @Component({
   selector: 'app-edit-question',
   templateUrl: './edit-question.component.html',
   styleUrls: ['./edit-question.component.scss']
 })
+
 export class EditQuestionComponent implements OnInit {
   formEditQuestion: FormGroup
-  question: Question
+  question: any
   checkedCategories: string[] = []
   categoryList: { category: string, isChecked: boolean }[] = []
   isSubmitted = false
+  checkedCategoriesForm: FormArray
+  canAddCheckedCategories = true
+  id: string;
 
   constructor(private route: ActivatedRoute,
               private questionService: TransferQuestionsService,
               private router: Router,
               private formBuilder: FormBuilder,
               private authService: SharedAuthService,
-              private errService: ErrService) {
+              private errService: ErrService,
+              private location: Location) {
   }
 
+
   ngOnInit(): void {
-    this.route.params
-      .pipe(switchMap(params => {
-        return this.questionService.getQuestionById(params['id'])
-      })).subscribe(question => {
-      this.question = question
+    this.route.params.pipe(
+      switchMap(params => this.questionService.getQuestionById(params['id'])
+      )
+    ).subscribe(res => {
+      this.question = res
+      console.log( res)
       for (let category of myGlobal.categories) {
-          if (this.question.tags.includes(category)) {
-            this.categoryList.push({category: category, isChecked: true})
-            this.checkedCategories.push( category)
-          } else {
-            this.categoryList.push({category: category, isChecked: false})
-          }
+        if (this.question.tags.includes(category)) {
+          this.categoryList.push({category: category, isChecked: true})
+          this.checkedCategories.push(category)
+        } else {
+          this.categoryList.push({category: category, isChecked: false})
+        }
       }
-      console.log(this.categoryList)
       this.formEditQuestion = this.formBuilder.group({
         title: new FormControl(this.question.title, Validators.required),
         text: new FormControl(this.question.text, Validators.required),
-        tags: this.formBuilder.array([], )
+        tags: this.formBuilder.array([],)
       })
     })
+  }
 
 
+  backClicked() {
+    this.location.back();
   }
 
   onCheckboxChange(e: any) {
-    const checkedCategories: FormArray = this.formEditQuestion.get('tags') as FormArray;
-
-    if (e.target.checked) {
-      checkedCategories.push(new FormControl(e.target.value));
-    } else {
-      const index = checkedCategories.controls.findIndex(x => x.value === e.target.value);
-      checkedCategories.removeAt(index);
+    this.checkedCategoriesForm = this.formEditQuestion.get('tags') as FormArray;
+    if (this.canAddCheckedCategories) {
+      for (let el of this.checkedCategories)
+        this.checkedCategoriesForm.push(new FormControl(el));
+      this.canAddCheckedCategories = false
     }
-    this.checkedCategories = (checkedCategories.value)
+    if (e.target.checked ) {
+      this.checkedCategoriesForm.push(new FormControl(e.target.value));
+    } else {
+      const index = this.checkedCategoriesForm.controls.findIndex(x => x.value === e.target.value);
+      this.checkedCategoriesForm.removeAt(index);
+    }
   }
 
   submit() {
-
     if (this.formEditQuestion.invalid) {
-      return
-    }
-    if (!this.checkedCategories.length) {
-      this.errService.openDialog('Select at least 1 category')
       return
     }
 
     const question: Question = {
       title: this.formEditQuestion.value.title,
       text: this.formEditQuestion.value.text,
-      tags: this.checkedCategories,
+      tags: this.checkedCategoriesForm ? this.checkedCategoriesForm.value : this.checkedCategories,
       date: this.question.date,
-      user: this.authService.getUserInfo().email,
-      isApproved: false,
+      user: this.question.user,
+      isApproved: this.question.isApproved,
       comments: this.question.comments
     }
 
-    this.route.params
-      .pipe(switchMap(params => {
-        return this.questionService.updateQuestion(question, params['id'])
-      })).subscribe(t => {
-      this.router.navigate(['/'])
-    })
+    this.questionService.updateQuestion(question, this.question.id)
+      .subscribe(t => {
+          this.backClicked()
+      },
+        error => this.errService.openDialog(error))
   }
 
 }

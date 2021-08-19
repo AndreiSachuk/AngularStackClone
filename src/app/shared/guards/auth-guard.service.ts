@@ -1,15 +1,17 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot, UrlTree} from '@angular/router';
-import {SharedAuthService} from "./shared-auth.service";
+import {SharedAuthService} from "../services/shared-auth.service";
 import {Observable} from "rxjs";
 import {map} from "rxjs/operators";
+
 
 @Injectable({
   providedIn: 'root'
 })
-export class LogGuard implements CanActivate {
-  constructor( private authService: SharedAuthService,
-               private routerService: Router) {
+export class AuthGuard implements CanActivate {
+
+  constructor(private auth: SharedAuthService,
+              private route: Router) {
   }
 
 
@@ -17,14 +19,13 @@ export class LogGuard implements CanActivate {
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Promise<boolean | UrlTree> | Observable<boolean | UrlTree> | boolean | UrlTree {
     {
-      return this.authService.checkAuth().pipe(
+      return this.auth.checkAuth().pipe(
         map((user) => {
           if (!!user) {
-            this.routerService.navigate(['/dashboard'])
-            return false
-
+            return true
           }
-          return true
+          this.route.navigate(['/sign-in'])
+          return false
         })
       )
     }

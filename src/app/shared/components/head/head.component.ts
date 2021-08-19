@@ -10,16 +10,18 @@ import {UserInfo} from "../../interfaces";
 })
 export class HeadComponent implements OnInit {
 
+  public userInfo: UserInfo = this.authService.getUserInfo()
 
   constructor(public authService: SharedAuthService,
               private routerService: Router,
   ) {
+
   }
 
   ngOnInit(): void {
+
   }
 
-  userInfo: UserInfo = this.authService.getUserInfo()
 
   logOut(): void {
     this.authService.signOut()

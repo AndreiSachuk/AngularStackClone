@@ -32,6 +32,7 @@ export class TransferQuestionsService {
     return this.http.get(`${environment.fbDbQuestUrl}/question.json`)
       //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
       .pipe(map((res:any) => {
+
         return Object.keys(res)
           .map((key: any) =>({
             ...res[key],
@@ -46,6 +47,7 @@ export class TransferQuestionsService {
       //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
       .pipe(map((res:any) => {
         this.currentQuestion = res
+        this.currentQuestion.name = id
         return {
             ...res,
             id,

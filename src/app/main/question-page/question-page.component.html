@@ -1,72 +1,85 @@
-<mat-card class="mat-elevation-z0 question__container" *ngIf="question$ | async as question; else loading">
-  <mat-card-content>
-    <div style="display: flex; justify-content: space-between">
-      <div>{{question.user}}</div>
-      <div>{{question.date | date:'medium'}}</div>
-    </div>
+<div class="question__container">
 
-    <mat-card-title>{{question.title}}</mat-card-title>
-
-  </mat-card-content>
-  <mat-card-content>
-    <div [innerHtml]='sanitaizer.bypassSecurityTrustHtml(question.text)'></div>
-  </mat-card-content>
-  <mat-card-actions style="display: flex;  justify-content: space-between; align-items: center">
-    <div>
-      {{question.tags}}
-    </div>
-    <div>
-      <button mat-button (click)="question.isApproved=true; " [disabled]="question.isApproved">Approve</button>
-      <button mat-button>Delete</button>
-      <!--    !!!!!!!!!!!-->
-      <button mat-button [routerLink]="['/question', question.id,'edit']">Edit</button>
-    </div>
-  </mat-card-actions>
-
-  <mat-card class="mat-elevation-z0 question__container">
+  <mat-card class="mat-elevation-z0 " *ngIf="question$ | async as question; else loading">
     <mat-card-content>
-      Comments
-    </mat-card-content>
-    <form [formGroup]="formAddComment" (ngSubmit)="addComment()" class="question__form">
-      <div>
-        <div class="question__margin">
-          <label for="text"><sub>Add your comment</sub></label>
-          <quill-editor formControlName="text" id="text"></quill-editor>
-          <div *ngIf="formAddComment.controls['text'].touched && formAddComment.controls['text'].invalid">
-            <small *ngIf="formAddComment.controls['text'].errors?.required">Enter your comment</small>
-          </div>
-        </div>
-        <button type="submit" mat-raised-button color="primary"
-                [disabled]="formAddComment.invalid || isSubmitted"> Add comment
-        </button>
+      <div style="display: flex; justify-content: space-between">
+        <div>{{question.user}}</div>
+        <div>{{question.date | date:'medium'}}</div>
       </div>
-    </form>
 
+      <mat-card-title>{{question.title}}</mat-card-title>
 
-    <div *ngFor="let comment of question.comments">
-      <mat-card style="display: flex; text-align: center; margin: 2px">
-        <div style=" width:30%;">
-          {{comment.user}}<br>
-          {{comment.date | date:'medium'}}
-        </div>
-        <div style=" width:60%; " [innerHTML]="sanitaizer.bypassSecurityTrustHtml(comment.text)">
-
-        </div>
-
-        <div style=" width:10%;">
-          {{comment.isDecision}}
-
+    </mat-card-content>
+    <mat-card-content class="ql-editor">
+      <div [innerHtml]='sanitaizer.bypassSecurityTrustHtml(question.text)' style="display: block;"></div>
+    </mat-card-content>
+    <mat-card-actions style="display: flex;  justify-content: space-between; align-items: center">
+      <div >
+        <div *ngFor="let category of question.tags" style="display: inline-block">
+          <button mat-button >{{category}}</button>
         </div>
 
+      </div>
+      <div>
+        <button mat-button (click)=" isApproved()" *ngIf="!question.isApproved">Approve</button>
+        <button mat-button (click)="deleteQuestion()">Delete</button>
+        <!--    !!!!!!!!!!!-->
+        <button mat-button [routerLink]="['/question', question.id,'edit']">Edit</button>
+      </div>
+    </mat-card-actions>
 
-      </mat-card>
 
-    </div>
+    <!--COMMENTS BLOCK-->
+<!--    !!!!!!!!!!ADD COMMENT START-->
+    <mat-card class="mat-elevation-z0 question__container">
+      <mat-card-content>
+        Comments
+      </mat-card-content>
+      <form [formGroup]="formAddComment" (ngSubmit)="addComment()" class="question__form">
+        <div>
+          <div class="question__margin">
+            <label for="text"><sub>Add your comment</sub></label>
+            <quill-editor formControlName="text" id="text"></quill-editor>
+            <div *ngIf="formAddComment.controls['text'].touched && formAddComment.controls['text'].invalid">
+              <small *ngIf="formAddComment.controls['text'].errors?.required">Enter your comment</small>
+            </div>
+          </div>
+          <button type="submit" mat-raised-button color="primary"
+                  [disabled]="formAddComment.invalid || isSubmitted"> Add comment
+          </button>
+        </div>
+      </form>
+      <!--    !!!!!!!!!!ADD COMMENT STOP-->
 
+      <!--    !!!!!!!!!!PARSE COMMENTS START-->
+      <div *ngFor="let comment of question.comments; let i = index">
+        <mat-card style="display: flex; text-align: center; margin: 2px" class="ql-editor">
+          <div style=" width:20%;">
+            {{comment.user}}<br>
+            {{comment.date | date:'medium'}}
+          </div>
+
+<!--          !!!!!!!!!!!!!!!!!!!!!!!! СПРОСИТЬ ПО ПОВОДУ ДЛИННЫХ КОММЕНТАРИЕВ!!!!!!!!!!!!!!!!!-->
+          <div style=" width:65%; text-align: start; " >
+            <div style=" " [innerHTML]="sanitaizer.bypassSecurityTrustHtml(comment.text)"></div>
+          </div>
+          <div style=" width:15%;" *ngIf="comment.isDecision">
+            <mat-icon aria-hidden="false">done</mat-icon>
+          </div>
+          <div style=" width:15%;" *ngIf="!comment.isDecision">
+            <button mat-raised-button (click)="addDecision(i)" >Add to decision</button>
+          </div>
+        </mat-card>
+      </div>
+      <!--    !!!!!!!!!!PARSE COMMENTS STOP-->
+
+
+    </mat-card>
 
   </mat-card>
 
-</mat-card>
+</div>
+
 
 
 <ng-template #loading style="text-align: center">

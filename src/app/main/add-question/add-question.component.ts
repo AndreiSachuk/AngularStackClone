@@ -24,7 +24,7 @@ export class AddQuestionComponent implements OnInit {
 
   constructor(private authService: SharedAuthService,
               private questionService: TransferQuestionsService,
-              private route: Router,
+              private router: Router,
               private errService: ErrService,
               private formBuilder: FormBuilder) {
   }
@@ -75,7 +75,7 @@ export class AddQuestionComponent implements OnInit {
 
     this.questionService.createQuestion(question)
       .subscribe(res => {
-        this.route.navigate(['/dashboard'])
+        this.router.navigate(['/dashboard'])
       },
         err =>{
           this.errService.openDialog(err.error.error)

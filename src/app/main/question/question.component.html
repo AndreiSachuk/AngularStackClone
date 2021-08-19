@@ -7,11 +7,17 @@
 <!--    <div [innerHtml]='sanitaizer.bypassSecurityTrustHtml(question.text)'></div>-->
 <!--  </mat-card-content>-->
   <mat-card-content>
-    {{question.tags}}
+    <div>
+      CATEGORIES
+    </div>
+
+    <div *ngFor="let category of question.tags" style="display: inline-block">
+      <button mat-button >{{category}}</button>
+    </div>
   </mat-card-content>
   <mat-card-actions style="margin: auto;">
-    <button mat-button (click)="question.isApproved=true; " [disabled]="question.isApproved">Approve</button>
-    <button mat-button>Delete</button>
+    <button mat-button (click)=" isApproved()" *ngIf="!question.isApproved">Approve</button>
+    <button mat-button (click)=" deleteQuestion()">Delete</button>
     <button mat-button [routerLink]="['/question', question.id]">Open</button>
   </mat-card-actions>
 </mat-card>

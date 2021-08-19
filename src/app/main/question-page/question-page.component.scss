@@ -2,8 +2,14 @@
   margin: 10px auto 20px;
   max-width: 1200px;
   text-align: center;
+  border: #3a3a3a 1px solid;
+  border-radius: 10px;
 }
 
 .question__margin{
   margin-bottom: 5px;
+}
+
+.mat-elevation-z0{
+  border-radius: 10px;
 }

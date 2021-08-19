@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {TransferQuestionsService} from "../../shared/services/transfer-questions.service";
-import {ActivatedRoute,} from "@angular/router";
+import {ActivatedRoute, Router,} from "@angular/router";
 import {switchMap} from "rxjs/operators";
 import {Observable} from "rxjs";
 import {DomSanitizer} from "@angular/platform-browser";
@@ -27,7 +27,8 @@ export class QuestionPageComponent implements OnInit {
               private route: ActivatedRoute,
               public sanitaizer: DomSanitizer,
               private formBuilder: FormBuilder,
-              private authService: SharedAuthService) {
+              private authService: SharedAuthService,
+              private router: Router) {
   }
 
   ngOnInit(): void {
@@ -57,8 +58,37 @@ export class QuestionPageComponent implements OnInit {
       .pipe(switchMap(params => {
         return this.questionService.updateQuestion(question, params['id'])
       })).subscribe(t => {
+      this.router.navigate(['/question',question.name])
     })
+  }
 
+  isApproved(){
+    let question: any = this.questionService.getQuestionInfo()
+    question.isApproved=true;
+
+    this.route.params
+      .pipe(switchMap(params => {
+        return this.questionService.updateQuestion(question, params['id'])
+      })).subscribe(t => {
+    })
+  }
+
+  deleteQuestion() {
+    this.route.params
+      .pipe(switchMap(params => {
+        return this.questionService.removeQuestion(params['id'])
+      })).subscribe(t => {this.router.navigate(['/dashboard']);},
+      error =>  console.log(error))
+  }
+
+  addDecision(idComment:  number) {
+    let question: any = this.questionService.getQuestionInfo()
+    question.comments[idComment].isDecision = true
+    this.route.params
+      .pipe(switchMap(params => {
+        return this.questionService.updateQuestion(question, params['id'])
+      })).subscribe(t => {
+    })
 
   }
 }

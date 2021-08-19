@@ -42,6 +42,12 @@ export class QuestionPageComponent implements OnInit {
       }))
   }
 
+  reloadComponent(url: string) {
+    this.router.routeReuseStrategy.shouldReuseRoute = () => false;
+    this.router.onSameUrlNavigation = 'reload';
+    this.router.navigate([url]);
+  }
+
 
   addComment() {
     let question: any = this.questionService.getQuestionInfo()
@@ -58,7 +64,7 @@ export class QuestionPageComponent implements OnInit {
       .pipe(switchMap(params => {
         return this.questionService.updateQuestion(question, params['id'])
       })).subscribe(t => {
-      this.router.navigate(['/question',question.name])
+      this.reloadComponent(`/question/${question.name}`)
     })
   }
 

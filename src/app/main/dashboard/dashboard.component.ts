@@ -4,8 +4,7 @@ import {FormControl} from "@angular/forms";
 import {TransferQuestionsService} from "../../shared/services/transfer-questions.service";
 import { Observable } from 'rxjs';
 import {Question} from "../../shared/interfaces";
-import {Router} from "@angular/router";
-import {ErrService} from "../../shared/services/err.service";
+
 
 
 @Component({
@@ -30,7 +29,6 @@ export class DashboardComponent implements OnInit {
   categoriesList: string[] = ['Extra cheese', 'Mushroom', 'Onion', 'Pepperoni', 'Sausage', 'Tomato'];
   ngOnInit(): void {
     this.questions$ = this.questionService.getAllQuestions()
-    this.questions$.subscribe(res=>console.log(res))
   }
 
 

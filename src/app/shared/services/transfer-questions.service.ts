@@ -10,8 +10,6 @@ import {Observable} from "rxjs";
 })
 export class TransferQuestionsService {
 
-  public currentQuestion: Question
-
   constructor(private http: HttpClient,
   ) {
   }
@@ -28,9 +26,7 @@ export class TransferQuestionsService {
       )
   }
 
-
-
-  getAllQuestions() : Observable<Object>{
+  getAllQuestions() : Observable<Question[]>{
     return this.http.get(`${environment.fbDbQuestUrl}/question.json`)
       .pipe(
       map((res: any) => {
@@ -53,16 +49,20 @@ export class TransferQuestionsService {
       }))
   }
 
-  removeQuestion(id:string){
+  removeQuestion(id:string) : Observable<Object>{
     return this.http.delete(`${environment.fbDbQuestUrl}/question/${id}.json`)
   }
 
-  updateQuestion(question: Question, id: string){
+  updateQuestion(question: Question, id: string): Observable<Object>{
     return this.http.put(`${environment.fbDbQuestUrl}/question/${id}.json`, question)
   }
 
-  patchQuestion(updateComponent: { [key: string] : any }, id: string){
+  patchQuestion(updateComponent: { [key: string] : any }, id: string) : Observable<Object>{
     return this.http.patch(`${environment.fbDbQuestUrl}/question/${id}.json`, updateComponent)
+  }
+
+  patchCommentsDecision(updateComponent: { [key: string] : any }, id: string, commentNumber: number) : Observable<Object>{
+    return this.http.patch(`${environment.fbDbQuestUrl}/question/${id}/comments/${commentNumber}.json`, updateComponent)
   }
 
 

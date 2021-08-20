@@ -13,15 +13,10 @@ export class HeadComponent implements OnInit {
   public userInfo: UserInfo = this.authService.getUserInfo()
 
   constructor(public authService: SharedAuthService,
-              private routerService: Router,
-  ) {
-
-  }
+              private routerService: Router,) {  }
 
   ngOnInit(): void {
-
   }
-
 
   logOut(): void {
     this.authService.signOut()

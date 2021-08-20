@@ -26,16 +26,6 @@ export interface Question{
   comments: Array<Comments>
 }
 
-
-
 export interface FbResponse{
   name?: string
 }
-
-export interface Tile {
-  color: string;
-  cols: number;
-  rows: number;
-  text: string;
-}
-

@@ -6,6 +6,7 @@ import {TransferQuestionsService} from "../../shared/services/transfer-questions
 import {ActivatedRoute, Router} from "@angular/router";
 import {ErrService} from "../../shared/services/err.service";
 
+
 @Component({
   selector: 'app-question',
   templateUrl: './question.component.html',
@@ -14,6 +15,7 @@ import {ErrService} from "../../shared/services/err.service";
 export class QuestionComponent implements OnInit {
 
   @Input() question: Question;
+
 
   constructor(private authService: SharedAuthService,
               public sanitaizer: DomSanitizer,
@@ -26,21 +28,17 @@ export class QuestionComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  isApproved() {
-    this.question.isApproved = true
-    this.questionService.patchQuestion({['isApproved']:this.question.isApproved}, this.question.id).subscribe(
-      answer => answer,
+  isApproved() : void {
+    this.questionService.patchQuestion({['isApproved']:true}, this.question.id).subscribe(
+      answer => this.question.isApproved = true,
       error => this.errService.openDialog(error)
     )
   }
 
-  deleteQuestion() {
+  deleteQuestion(): void {
     this.questionService.removeQuestion(this.question.id).subscribe(
       (t)=> {
-        this.questionService.getAllQuestions().subscribe(
-          ()=>this.router.navigate(['/dashboard']),
-          (error:string) => this.errService.openDialog(error)
-        )
+        location.reload();
       },
       error => this.errService.openDialog(error)
     )

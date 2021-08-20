@@ -27,7 +27,6 @@
       <div>
         <button mat-button (click)=" isApproved()" *ngIf="!question.isApproved">Approve</button>
         <button mat-button (click)="deleteQuestion()">Delete</button>
-        <!--    !!!!!!!!!!!-->
         <button mat-button [routerLink]="['/question', question.id,'edit']">Edit</button>
       </div>
     </mat-card-actions>
@@ -63,7 +62,6 @@
             {{comment.date | date:'medium'}}
           </div>
 
-<!--          !!!!!!!!!!!!!!!!!!!!!!!! СПРОСИТЬ ПО ПОВОДУ ДЛИННЫХ КОММЕНТАРИЕВ!!!!!!!!!!!!!!!!!-->
           <div style=" width:65%; text-align: start; " >
             <div style=" " [innerHTML]="sanitaizer.bypassSecurityTrustHtml(comment.text)"></div>
           </div>

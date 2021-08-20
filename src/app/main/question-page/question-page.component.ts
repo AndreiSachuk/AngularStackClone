@@ -1,8 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 import {TransferQuestionsService} from "../../shared/services/transfer-questions.service";
 import {ActivatedRoute, Router,} from "@angular/router";
-import {find, map, switchMap} from "rxjs/operators";
-import {Observable} from "rxjs";
+import {find, map, switchMap, switchMapTo} from "rxjs/operators";
+import {BehaviorSubject, Observable} from "rxjs";
 import {DomSanitizer} from "@angular/platform-browser";
 import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 import {Comments, Question} from "../../shared/interfaces";
@@ -16,13 +16,11 @@ import {ErrService} from "../../shared/services/err.service";
 })
 export class QuestionPageComponent implements OnInit {
 
-
   question$: Observable<Question>
 
   formAddComment: FormGroup
   isSubmitted = false
   id: string;
-
 
   constructor(private questionService: TransferQuestionsService,
               private route: ActivatedRoute,
@@ -47,40 +45,43 @@ export class QuestionPageComponent implements OnInit {
     )
   }
 
-  reloadComponent(url: string) {
-    this.router.routeReuseStrategy.shouldReuseRoute = () => false;
-    this.router.onSameUrlNavigation = 'reload';
-    this.router.navigate([url]);
-  }
+  event$ = new BehaviorSubject(true);
 
+  updateData() {
+    this.question$ = this.event$.pipe(switchMapTo(this.questionService.getQuestionById(this.id)));
+    this.event$.next(true);
+    this.router.navigate([`/question/${this.id}`])
+  }
 
   addComment() {
     let question: Question
-    this.question$.pipe(find(question => question.id === this.id)).subscribe((res: Question) => {
-      question = res
-      question.comments ? question.comments.push(newComment) : question.comments = [newComment]
-      this.questionService.patchQuestion({['comments']: question.comments}, this.id)
-        .subscribe(
-          t => {
-            this.reloadComponent(`/question/${this.id}`)
-            this.formAddComment.reset()
-          },
-          error => this.errService.openDialog(error)
-        )
-    })
     let newComment: Comments = {
       date: new Date().getTime(),
       isDecision: false,
       user: this.authService.getUserInfo().email,
       text: this.formAddComment.controls['text'].value
     }
+    this.question$.pipe(find(question => question.id === this.id)).subscribe((res: Question) => {
+      question = res
+      question.comments ? question.comments.push(newComment) : question.comments = [newComment]
+      this.questionService.patchQuestion({['comments']: question.comments}, this.id)
+        .subscribe(
+          t => {
+            this.formAddComment.reset(),
+              this.updateData()
+          },
+          error => this.errService.openDialog(error)
+        )
+    })
   }
 
   isApproved() {
     this.questionService.patchQuestion({['isApproved']: true}, this.id)
       .subscribe(
-        t => this.reloadComponent(`/question/${this.id}`),
-        error => this.errService.openDialog(error)
+        t => {
+          this.updateData()
+        },
+        error => this.errService.openDialog(error.error.error)
       )
   }
 
@@ -89,14 +90,14 @@ export class QuestionPageComponent implements OnInit {
       .subscribe(t => {
           this.router.navigate(['/dashboard']);
         },
-        error => this.errService.openDialog(error))
+        error => this.errService.openDialog(error.error.error))
   }
 
   addDecision(idComment: number) {
-    this.questionService.patchQuestion({[`comments[${idComment}].isDecision`]: true}, this.id)
+    this.questionService.patchCommentsDecision({[`isDecision`]: true}, this.id, idComment)
       .subscribe(t => {
-
+          this.updateData()
         },
-        error => this.errService.openDialog(error))
+        error => this.errService.openDialog(error.error.error))
   }
 }

@@ -7,7 +7,6 @@ import {Question} from "../../shared/interfaces";
 import {SharedAuthService} from "../../shared/services/shared-auth.service";
 import {ErrService} from "../../shared/services/err.service";
 import * as myGlobal from "../../shared/constants";
-import {Location} from "@angular/common";
 
 @Component({
   selector: 'app-edit-question',
@@ -17,12 +16,12 @@ import {Location} from "@angular/common";
 
 export class EditQuestionComponent implements OnInit {
   formEditQuestion: FormGroup
-  question: any
+  question: Question
   checkedCategories: string[] = []
   categoryList: { category: string, isChecked: boolean }[] = []
   isSubmitted = false
   checkedCategoriesForm: FormArray
-  canAddCheckedCategories = true
+  canAddCheckedCategories:boolean = true
   id: string;
 
   constructor(private route: ActivatedRoute,
@@ -30,8 +29,7 @@ export class EditQuestionComponent implements OnInit {
               private router: Router,
               private formBuilder: FormBuilder,
               private authService: SharedAuthService,
-              private errService: ErrService,
-              private location: Location) {
+              private errService: ErrService,){
   }
 
 
@@ -41,7 +39,7 @@ export class EditQuestionComponent implements OnInit {
       )
     ).subscribe(res => {
       this.question = res
-      console.log( res)
+      this.id = res.id
       for (let category of myGlobal.categories) {
         if (this.question.tags.includes(category)) {
           this.categoryList.push({category: category, isChecked: true})
@@ -53,23 +51,19 @@ export class EditQuestionComponent implements OnInit {
       this.formEditQuestion = this.formBuilder.group({
         title: new FormControl(this.question.title, Validators.required),
         text: new FormControl(this.question.text, Validators.required),
-        tags: this.formBuilder.array([],)
+        tags: this.formBuilder.array([],Validators.required)
       })
+      this.checkedCategoriesForm = this.formEditQuestion.get('tags') as FormArray
+      for (let el of this.checkedCategories)
+        this.checkedCategoriesForm.push(new FormControl(el));
     })
   }
 
-
-  backClicked() {
-    this.location.back();
+  returnToQuestion(): void {
+    this.router.navigate([`/question/${this.id}`])
   }
 
   onCheckboxChange(e: any) {
-    this.checkedCategoriesForm = this.formEditQuestion.get('tags') as FormArray;
-    if (this.canAddCheckedCategories) {
-      for (let el of this.checkedCategories)
-        this.checkedCategoriesForm.push(new FormControl(el));
-      this.canAddCheckedCategories = false
-    }
     if (e.target.checked ) {
       this.checkedCategoriesForm.push(new FormControl(e.target.value));
     } else {
@@ -78,7 +72,7 @@ export class EditQuestionComponent implements OnInit {
     }
   }
 
-  submit() {
+  submit(): void {
     if (this.formEditQuestion.invalid) {
       return
     }
@@ -86,16 +80,16 @@ export class EditQuestionComponent implements OnInit {
     const question: Question = {
       title: this.formEditQuestion.value.title,
       text: this.formEditQuestion.value.text,
-      tags: this.checkedCategoriesForm ? this.checkedCategoriesForm.value : this.checkedCategories,
+      tags: this.checkedCategoriesForm.value,
       date: this.question.date,
       user: this.question.user,
       isApproved: this.question.isApproved,
       comments: this.question.comments
     }
 
-    this.questionService.updateQuestion(question, this.question.id)
+    this.questionService.updateQuestion(question, this.id)
       .subscribe(t => {
-          this.backClicked()
+          this.returnToQuestion()
       },
         error => this.errService.openDialog(error))
   }

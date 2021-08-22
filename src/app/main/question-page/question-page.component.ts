@@ -47,10 +47,10 @@ export class QuestionPageComponent implements OnInit {
 
   event$ = new BehaviorSubject(true);
 
-  updateData() {
+  updateData(addr: string) {
     this.question$ = this.event$.pipe(switchMapTo(this.questionService.getQuestionById(this.id)));
     this.event$.next(true);
-    this.router.navigate([`/question/${this.id}`])
+    this.router.navigate([])
   }
 
   addComment() {
@@ -67,8 +67,8 @@ export class QuestionPageComponent implements OnInit {
       this.questionService.patchQuestion({['comments']: question.comments}, this.id)
         .subscribe(
           t => {
-            this.formAddComment.reset(),
-              this.updateData()
+            this.formAddComment.reset()
+            this.updateData(`/question/${this.id}`)
           },
           error => this.errService.openDialog(error)
         )
@@ -79,7 +79,7 @@ export class QuestionPageComponent implements OnInit {
     this.questionService.patchQuestion({['isApproved']: true}, this.id)
       .subscribe(
         t => {
-          this.updateData()
+          this.updateData(`/question/${this.id}`)
         },
         error => this.errService.openDialog(error.error.error)
       )
@@ -96,7 +96,7 @@ export class QuestionPageComponent implements OnInit {
   addDecision(idComment: number) {
     this.questionService.patchCommentsDecision({[`isDecision`]: true}, this.id, idComment)
       .subscribe(t => {
-          this.updateData()
+          this.updateData(`/question/${this.id}`)
         },
         error => this.errService.openDialog(error.error.error))
   }

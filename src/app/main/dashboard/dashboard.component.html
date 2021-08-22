@@ -27,13 +27,16 @@
 
 </mat-toolbar>
 
+
+
 <div *ngIf="questions$ | async as questions" class="question__content">
   <div fxLayout="row wrap" fxLayoutGap="16px grid" >
-      <app-question *ngFor="let question of questions" [question]="question" fxFlex="25%" fxFlex.xs="100%" fxFlex.md="33%" fxFlex.sm="50%">
+      <app-question *ngFor="let question of questions" [question]="question" fxFlex="25%" fxFlex.xs="100%" fxFlex.md="33%" fxFlex.sm="50%" (onChanged)="onChanged()">
       </app-question>
   </div>
 
 </div>
+
 
 <div class="add-button">
   <button mat-fab aria-label="Add question" routerLink="/add-question">

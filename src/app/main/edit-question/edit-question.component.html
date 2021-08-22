@@ -3,13 +3,13 @@
   <form [formGroup]="formEditQuestion" (ngSubmit)="submit()" class="question__form">
 
     <mat-card-content>
-      <div style="display: flex; justify-content: space-between">
-        <div>
+      <div class="question__main" >
+        <div class="question__main-width">
           <button mat-raised-button (click)="returnToQuestion() ;" >Back</button>
         </div>
 
-        <div>{{question.user}}</div>
-        <div>{{question.date | date:'medium'}}</div>
+        <div class="question__main-width">{{question.user}}</div>
+        <div class="question__main-width">{{question.date | date:'medium'}}</div>
       </div>
 
       <mat-card-title>{{question.title}}</mat-card-title>
@@ -51,7 +51,7 @@
   </form>
 
 </div>
-<ng-template #loading style="text-align: center">
+<ng-template #loading>
   <mat-spinner></mat-spinner>
 </ng-template>
 

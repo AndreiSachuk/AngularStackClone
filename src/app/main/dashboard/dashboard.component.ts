@@ -29,6 +29,9 @@ export class DashboardComponent implements OnInit {
     this.questions$ = this.questionService.getAllQuestions()
   }
 
+  onChanged(){
+    this.ngOnInit()
+  }
 
 
 

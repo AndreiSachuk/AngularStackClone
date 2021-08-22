@@ -1,5 +1,15 @@
 
 .question {
+  &__main{
+    display: flex;
+    justify-content: space-between;
+    &-width{
+      width: 33.3%;
+    }
+  }
+
+
+
   &__form {
     border: 1px solid #3a3a3a;
     border-radius: 5px;

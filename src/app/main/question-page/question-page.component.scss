@@ -13,3 +13,33 @@
 .mat-elevation-z0{
   border-radius: 10px;
 }
+
+.question__navigate{
+  display: flex;
+  justify-content: space-between
+}
+
+.question__actions{
+  display: flex;
+  justify-content: space-between;
+  &-categories{
+    display: inline-block
+  }
+}
+
+.question__comments{
+  display: flex;
+  text-align: center;
+  margin: 2px;
+  &-user{
+    width:20%;
+  }
+  &-comment{
+    width: 65%;
+    text-align: start;
+  }
+  &-decision{
+    width:15%
+  }
+}
+

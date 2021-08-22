@@ -2,7 +2,7 @@
 
   <mat-card class="mat-elevation-z0 " *ngIf="question$ | async as question; else loading">
     <mat-card-content>
-      <div style="display: flex; justify-content: space-between">
+      <div class="question__navigate" >
         <div>
           <button mat-raised-button routerLink='/dashboard' >Back</button>
         </div>
@@ -15,11 +15,11 @@
 
     </mat-card-content>
     <mat-card-content class="ql-editor">
-      <div [innerHtml]='sanitaizer.bypassSecurityTrustHtml(question.text)' style="display: block;"></div>
+      <div [innerHtml]='sanitaizer.bypassSecurityTrustHtml(question.text)'></div>
     </mat-card-content>
-    <mat-card-actions style="display: flex;  justify-content: space-between; align-items: center">
+    <mat-card-actions class="question__actions">
       <div >
-        <div *ngFor="let category of question.tags" style="display: inline-block">
+        <div *ngFor="let category of question.tags" class="question__actions-categories">
           <button mat-button >{{category}}</button>
         </div>
 
@@ -56,19 +56,19 @@
 
       <!--    !!!!!!!!!!PARSE COMMENTS START-->
       <div *ngFor="let comment of question.comments; let i = index">
-        <mat-card style="display: flex; text-align: center; margin: 2px" class="ql-editor">
-          <div style=" width:20%;">
+        <mat-card  class="ql-editor question__comments">
+          <div class="question__comments-user" >
             {{comment.user}}<br>
             {{comment.date | date:'medium'}}
           </div>
 
-          <div style=" width:65%; text-align: start; " >
-            <div style=" " [innerHTML]="sanitaizer.bypassSecurityTrustHtml(comment.text)"></div>
+          <div class="question__comments-comment" >
+            <div [innerHTML]="sanitaizer.bypassSecurityTrustHtml(comment.text)"></div>
           </div>
-          <div style=" width:15%;" *ngIf="comment.isDecision">
+          <div class="question__comments-decision"  *ngIf="comment.isDecision">
             <mat-icon aria-hidden="false">done</mat-icon>
           </div>
-          <div style=" width:15%;" *ngIf="!comment.isDecision">
+          <div class="question__comments-decision" *ngIf="!comment.isDecision">
             <button mat-raised-button (click)="addDecision(i)" >Add to decision</button>
           </div>
         </mat-card>
@@ -83,7 +83,6 @@
 </div>
 
 
-
-<ng-template #loading style="text-align: center">
+<ng-template #loading >
   <mat-spinner></mat-spinner>
 </ng-template>

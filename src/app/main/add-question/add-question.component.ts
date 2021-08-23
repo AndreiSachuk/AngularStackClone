@@ -3,7 +3,7 @@ import {FormArray, FormBuilder, FormControl, FormGroup, Validators} from "@angul
 import * as myGlobal from "../../shared/constants";
 import {SharedAuthService} from "../../shared/services/shared-auth.service";
 import {TransferQuestionsService} from "../../shared/services/transfer-questions.service";
-import { Question} from "../../shared/interfaces";
+import {Question} from "../../shared/interfaces";
 import {Router} from "@angular/router";
 import {ErrService} from "../../shared/services/err.service";
 
@@ -41,14 +41,15 @@ export class AddQuestionComponent implements OnInit {
     }
   }
 
-  onCheckboxChange(e:any) : void{
-    const checkedCategories: FormArray = this.formAddQuestion.get('tags') as FormArray;
+  onCheckboxChange(e: Event) : void{
+    console.log(e)
+    const checkedCategories: FormArray = this.formAddQuestion.get('tags') as FormArray
 
-    if (e.target.checked) {
-      checkedCategories.push(new FormControl(e.target.value));
+    if ((e.target as HTMLInputElement).checked) {
+      checkedCategories.push(new FormControl((e.target as HTMLInputElement).value))
     } else {
-      const index = checkedCategories.controls.findIndex(x => x.value === e.target.value);
-      checkedCategories.removeAt(index);
+      const index = checkedCategories.controls.findIndex(x => x.value === ((e.target as HTMLInputElement).value))
+      checkedCategories.removeAt(index)
     }
     this.checkedCategories=checkedCategories.value
   }

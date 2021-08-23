@@ -63,12 +63,12 @@ export class EditQuestionComponent implements OnInit {
     this.router.navigate([`/question/${this.id}`])
   }
 
-  onCheckboxChange(e: any) {
-    if (e.target.checked ) {
-      this.checkedCategoriesForm.push(new FormControl(e.target.value));
+  onCheckboxChange( e: Event) {
+    if ((e.target as HTMLInputElement).checked ) {
+      this.checkedCategoriesForm.push(new FormControl((e.target as HTMLInputElement).value))
     } else {
-      const index = this.checkedCategoriesForm.controls.findIndex(x => x.value === e.target.value);
-      this.checkedCategoriesForm.removeAt(index);
+      const index = this.checkedCategoriesForm.controls.findIndex(x => x.value === (e.target as HTMLInputElement).value)
+      this.checkedCategoriesForm.removeAt(index)
     }
   }
 

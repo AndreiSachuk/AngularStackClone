@@ -47,7 +47,7 @@ export class SharedAuthService {
     return this.user
   }
 
-  checkAuth(): Observable<any> {
+  checkAuth(): Observable<firebase.User | null> {
     return this.authService.authState.pipe(
       map((user)=> {
         this.user = user

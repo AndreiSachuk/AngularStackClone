@@ -12,6 +12,7 @@ import {ErrService} from "../../shared/services/err.service";
 export class QuestionComponent implements OnInit {
 
   @Input() question: Question;
+  @Input() view: string;
   @Output() onChanged = new EventEmitter();
 
   constructor(public sanitaizer: DomSanitizer,

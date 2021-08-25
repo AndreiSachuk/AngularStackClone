@@ -9,6 +9,7 @@ import {Comments, Question} from "../../shared/interfaces";
 import {SharedAuthService} from "../../shared/services/shared-auth.service";
 import {ErrService} from "../../shared/services/err.service";
 
+
 @Component({
   selector: 'app-question-page',
   templateUrl: './question-page.component.html',
@@ -76,6 +77,7 @@ export class QuestionPageComponent implements OnInit {
     this.questionService.patchQuestion({['isApproved']: true}, this.id)
       .subscribe(
         t => {
+
           this.updateData()
         },
         error => this.errService.openDialog(error.error.error)
@@ -93,7 +95,10 @@ export class QuestionPageComponent implements OnInit {
   addDecision(idComment: number) {
     this.questionService.patchCommentsDecision({[`isDecision`]: true}, this.id, idComment)
       .subscribe(t => {
-          this.updateData()
+          this.questionService.patchQuestion({['isResolved']: true}, this.id)
+            .subscribe( t=>{
+              this.updateData()
+            })
         },
         error => this.errService.openDialog(error.error.error))
   }

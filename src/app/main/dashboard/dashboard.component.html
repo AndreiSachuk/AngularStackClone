@@ -4,7 +4,7 @@
       <mat-icon>filter_list</mat-icon>
     </button>
   </div>
-  <div >
+  <div>
     <button mat-button (click)="sorting = true">
       <mat-icon>arrow_upward</mat-icon>
     </button>
@@ -12,34 +12,33 @@
       <mat-icon>arrow_downward</mat-icon>
     </button>
 
-
   </div>
-  <div (click)="settingsMenu()">
-    <button mat-button>
-      <mat-icon>settings</mat-icon>
+
+  <div>
+    <button mat-button value="grid" aria-label="Grid view" (click)="view='grid'">
+      <mat-icon>grid_view</mat-icon>
+    </button>
+    <button mat-button value="row" aria-label="Row view" (click)="view='row'">
+      <mat-icon>calendar_view_day</mat-icon>
+    </button>
+    <button mat-button value="mode" aria-label="Row view" (click)="changeTheme()">
+      <mat-icon>dark_mode</mat-icon>
     </button>
   </div>
 
 </mat-toolbar>
 
-
-
-
 <mat-toolbar color="primary" class="navbar" *ngIf="filters" style="display: flex">
-
-    <div>
-      <section class="example-section" [formGroup]="checkboxCategories">
-        <h4>Select your toppings:</h4>
-        <div *ngFor="let category of categoriesList" class="question__tags">
-            <p><mat-checkbox [formControlName]="category" >{{category}}</mat-checkbox></p>
-        </div>
-      </section>
-
-      <section class="example-section" [formGroup]="checkboxCategories">
-        <h4>You chose:</h4>
-        {{checkboxCategories.value | json}}
-      </section>
-    </div>
+  <div>
+    <section class="example-section" [formGroup]="checkboxCategories">
+      <h4>Select your toppings:</h4>
+      <div *ngFor="let category of categoriesList" class="question__tags">
+        <p>
+          <mat-checkbox [formControlName]="category">{{category}}</mat-checkbox>
+        </p>
+      </div>
+    </section>
+  </div>
 
 
   <div>
@@ -52,7 +51,8 @@
         <mat-radio-button class="time-group-button" *ngFor="let time of timeCategories" [value]="time">
           {{time}}
         </mat-radio-button>
-      </mat-radio-group></div>
+      </mat-radio-group>
+    </div>
   </div>
   <div>
     <div>
@@ -60,36 +60,40 @@
       <mat-radio-group
         aria-labelledby="time-group-label"
         class="time-group"
-        [(ngModel)]="isDecisionSelect">
-        <mat-radio-button class="time-group-button" *ngFor="let cat of isDecisionCategories" [value]="cat">
+        [(ngModel)]="decisionSelect">
+        <mat-radio-button class="time-group-button" *ngFor="let cat of decisionCategories" [value]="cat">
           {{cat}}
         </mat-radio-button>
       </mat-radio-group>
     </div>
   </div>
   <div style="display: flex;  flex-direction: column;">
-    <button mat-raised-button aria-label="Save filter" (click)="filtersMenu()" style="margin: 20px 0;"> Save filter </button>
-    <button mat-raised-button aria-label="Save filter" (click)="ngOnInit()"> Reset filter </button>
+    <button mat-raised-button aria-label="Save filter" (click)="filtersMenu()" style="margin: 20px 0;"> Save filter
+    </button>
+    <button mat-raised-button aria-label="Save filter" (click)="ngOnInit(); filtersMenu()"> Reset filter</button>
   </div>
 </mat-toolbar>
 
 <mat-toolbar color="primary" class="navbar" *ngIf="settings">
-  Settings ON
+  <!--  grid_view    calendar_view_day   -->
+
 </mat-toolbar>
 
-
-<!--(change)="onCheckboxChange($event) "-->
-
-
 <div *ngIf="questions$ | async as questions" class="question__content">
-  <div fxLayout="row wrap" fxLayoutGap="16px grid">
-    <app-question *ngFor="let question of questions | sort: 'date' : sorting" [question]="question" fxFlex="25%" fxFlex.xs="100%" fxFlex.md="33%"
+  <div fxLayout="row wrap" fxLayoutGap="16px grid" *ngIf="view==='grid'">
+    <app-question *ngFor="let question of questions | filters: checkboxCategories.value : timeSelect: decisionSelect |
+    sort: 'date' : sorting " [question]="question" [view]="view" fxFlex="25%" fxFlex.xs="100%" fxFlex.md="33%"
                   fxFlex.sm="50%" (onChanged)="onChanged()">
     </app-question>
   </div>
 
-</div>
+  <div *ngIf="view==='row'">
+    <app-question *ngFor="let question of questions | filters: checkboxCategories.value : timeSelect: decisionSelect |
+                    sort: 'date' : sorting " [question]="question" [view]="view" (onChanged)="onChanged()">
+    </app-question>
+  </div>
 
+</div>
 
 <div class="add-button">
   <button mat-fab aria-label="Add question" routerLink="/add-question">

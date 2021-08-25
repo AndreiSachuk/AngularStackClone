@@ -71,6 +71,7 @@ export class AddQuestionComponent implements OnInit {
       date: new Date().getTime(),
       user: this.authService.getUserInfo().email,
       isApproved: false,
+      isResolved: false,
       comments: []
     }
 

@@ -23,6 +23,7 @@ export interface Question{
   date: number,
   user: string,
   isApproved: boolean,
+  isResolved?: boolean,
   comments: Array<Comments>
 }
 

@@ -22,7 +22,6 @@ export class DashboardComponent implements OnInit {
   categoriesList: string[] = categories
   checkCategoriesList = Object.assign({}, ...this.categoriesList.map(n => ({ [n]: false })))
 
-
   sorting: boolean = false;
 
   private request$ = new BehaviorSubject(true);
@@ -32,17 +31,18 @@ export class DashboardComponent implements OnInit {
   timeSelectDefault: string = 'All time'
   timeSelect: string
   timeCategories: string[] = ['Day', 'Week', 'Month', 'All time'];
-  isDecisionSelectDefault: string = 'Does not matter';
-  isDecisionSelect: string;
-  isDecisionCategories: string[] = ['Yes', 'No', 'Does not matter'];
+  decisionSelectDefault: string = 'Does not matter';
+  decisionSelect: string;
+  decisionCategories: string[] = ['Yes', 'No', 'Does not matter'];
 
   checkboxCategories: FormGroup;
+  view: string = 'grid';
 
   constructor(private authService: SharedAuthService,
               private questionService: TransferQuestionsService,
               private route: ActivatedRoute,
               private formBuilder: FormBuilder,
-              private errService: ErrService) {
+              ) {
     this.route.params.subscribe((param) => {
       this.id = param['id']
       this.request$.next(true)
@@ -57,7 +57,7 @@ export class DashboardComponent implements OnInit {
 
   ngOnInit(): void {
     this.timeSelect = this.timeSelectDefault
-    this.isDecisionSelect = this.isDecisionSelectDefault
+    this.decisionSelect = this.decisionSelectDefault
     this.checkboxCategories = this.formBuilder.group({
       ...this.checkCategoriesList
     });
@@ -76,8 +76,7 @@ export class DashboardComponent implements OnInit {
   }
 
 
+  changeTheme() {
 
-
-
-
+  }
 }

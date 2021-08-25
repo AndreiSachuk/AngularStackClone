@@ -26,6 +26,8 @@ import { ServiceWorkerModule } from '@angular/service-worker';
 import { QuestionComponent } from './main/question/question.component';
 import {FlexLayoutModule} from "@angular/flex-layout";
 import { EditQuestionComponent} from './main/edit-question/edit-question.component';
+import { SortPipe } from './shared/pipes/sort.pipe';
+import { FiltersPipe } from './shared/pipes/filters.pipe';
 
 
 @NgModule({
@@ -41,6 +43,8 @@ import { EditQuestionComponent} from './main/edit-question/edit-question.compone
     AddQuestionComponent,
     QuestionComponent,
     EditQuestionComponent,
+    SortPipe,
+    FiltersPipe,
 
   ],
   entryComponents: [DialogComponent],

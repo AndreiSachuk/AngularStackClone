@@ -1,38 +1,91 @@
 <mat-toolbar color="primary" class="navbar">
-  <div>
-
-    <button mat-button [matMenuTriggerFor]="filters">Filters</button>
-    <mat-menu #filters="matMenu">
-      <button mat-menu-item [matMenuTriggerFor]="vertebrates">Vertebrates</button>
-    </mat-menu>
-
-    <mat-menu #vertebrates="matMenu">
-
-      <mat-select [formControl]="categories" multiple>
-        <mat-option *ngFor="let category of categoriesList" [value]="category">{{category}}</mat-option>
-      </mat-select>
-
-      <button mat-menu-item>Item 2</button>
-    </mat-menu>
+  <div (click)="filtersMenu()">
+    <button mat-button>
+      <mat-icon>filter_list</mat-icon>
+    </button>
+  </div>
+  <div >
+    <button mat-button (click)="sorting = true">
+      <mat-icon>arrow_upward</mat-icon>
+    </button>
+    <button mat-button (click)="sorting = false">
+      <mat-icon>arrow_downward</mat-icon>
+    </button>
 
 
   </div>
-  <div>
-
-    field2
-  </div>
-  <div>
-    settings
+  <div (click)="settingsMenu()">
+    <button mat-button>
+      <mat-icon>settings</mat-icon>
+    </button>
   </div>
 
 </mat-toolbar>
 
 
 
+
+<mat-toolbar color="primary" class="navbar" *ngIf="filters" style="display: flex">
+
+    <div>
+      <section class="example-section" [formGroup]="checkboxCategories">
+        <h4>Select your toppings:</h4>
+        <div *ngFor="let category of categoriesList" class="question__tags">
+            <p><mat-checkbox [formControlName]="category" >{{category}}</mat-checkbox></p>
+        </div>
+      </section>
+
+      <section class="example-section" [formGroup]="checkboxCategories">
+        <h4>You chose:</h4>
+        {{checkboxCategories.value | json}}
+      </section>
+    </div>
+
+
+  <div>
+    <div>
+      <label id="time-group">Time filter:</label>
+      <mat-radio-group
+        aria-labelledby="time-group-label"
+        class="time-group"
+        [(ngModel)]="timeSelect">
+        <mat-radio-button class="time-group-button" *ngFor="let time of timeCategories" [value]="time">
+          {{time}}
+        </mat-radio-button>
+      </mat-radio-group></div>
+  </div>
+  <div>
+    <div>
+      <label id="with-decision">Has decision?</label>
+      <mat-radio-group
+        aria-labelledby="time-group-label"
+        class="time-group"
+        [(ngModel)]="isDecisionSelect">
+        <mat-radio-button class="time-group-button" *ngFor="let cat of isDecisionCategories" [value]="cat">
+          {{cat}}
+        </mat-radio-button>
+      </mat-radio-group>
+    </div>
+  </div>
+  <div style="display: flex;  flex-direction: column;">
+    <button mat-raised-button aria-label="Save filter" (click)="filtersMenu()" style="margin: 20px 0;"> Save filter </button>
+    <button mat-raised-button aria-label="Save filter" (click)="ngOnInit()"> Reset filter </button>
+  </div>
+</mat-toolbar>
+
+<mat-toolbar color="primary" class="navbar" *ngIf="settings">
+  Settings ON
+</mat-toolbar>
+
+
+<!--(change)="onCheckboxChange($event) "-->
+
+
 <div *ngIf="questions$ | async as questions" class="question__content">
-  <div fxLayout="row wrap" fxLayoutGap="16px grid" >
-      <app-question *ngFor="let question of questions" [question]="question" fxFlex="25%" fxFlex.xs="100%" fxFlex.md="33%" fxFlex.sm="50%" (onChanged)="onChanged()">
-      </app-question>
+  <div fxLayout="row wrap" fxLayoutGap="16px grid">
+    <app-question *ngFor="let question of questions | sort: 'date' : sorting" [question]="question" fxFlex="25%" fxFlex.xs="100%" fxFlex.md="33%"
+                  fxFlex.sm="50%" (onChanged)="onChanged()">
+    </app-question>
   </div>
 
 </div>

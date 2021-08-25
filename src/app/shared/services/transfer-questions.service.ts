@@ -53,8 +53,8 @@ export class TransferQuestionsService {
     return this.http.delete(`${environment.fbDbQuestUrl}/question/${id}.json`)
   }
 
-  updateQuestion(question: Question, id: string): Observable<Object> {
-    return this.http.put(`${environment.fbDbQuestUrl}/question/${id}.json`, question)
+  updateQuestion(question: Question): Observable<Object> {
+    return this.http.put(`${environment.fbDbQuestUrl}/question/${question.id}.json`, question)
   }
 
   patchQuestion(updateComponent: { [key: string]: boolean | Comments[] }, id: string): Observable<Object> {

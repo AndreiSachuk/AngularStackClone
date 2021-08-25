@@ -1,9 +1,7 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {Question} from "../../shared/interfaces";
-import {SharedAuthService} from "../../shared/services/shared-auth.service";
 import {DomSanitizer} from "@angular/platform-browser";
 import {TransferQuestionsService} from "../../shared/services/transfer-questions.service";
-import {ActivatedRoute, Router} from "@angular/router";
 import {ErrService} from "../../shared/services/err.service";
 
 @Component({
@@ -16,12 +14,8 @@ export class QuestionComponent implements OnInit {
   @Input() question: Question;
   @Output() onChanged = new EventEmitter();
 
-
-  constructor(private authService: SharedAuthService,
-              public sanitaizer: DomSanitizer,
+  constructor(public sanitaizer: DomSanitizer,
               private questionService: TransferQuestionsService,
-              private route: ActivatedRoute,
-              private router: Router,
               private errService: ErrService) {
   }
 
@@ -31,7 +25,6 @@ export class QuestionComponent implements OnInit {
   update() {
     this.onChanged.emit();
   }
-
 
   isApproved(): void {
     this.questionService.patchQuestion({['isApproved']: true}, this.question.id).subscribe(

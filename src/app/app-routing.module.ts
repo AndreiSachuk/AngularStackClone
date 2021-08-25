@@ -1,6 +1,5 @@
 import {NgModule} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
-import {HeadComponent} from "./shared/components/head/head.component";
 import {SignComponent} from "./auth/signin/sign.component";
 import {DashboardComponent} from "./main/dashboard/dashboard.component";
 import {SignUpComponent} from "./auth/sign-up/sign-up.component";
@@ -14,8 +13,6 @@ import {EditQuestionComponent} from "./main/edit-question/edit-question.componen
 
 
 const routes: Routes = [
-  {
-    path: '', component: HeadComponent, children: [
       {path: '', redirectTo: '/sign-in', pathMatch: 'full'},
       {path: 'sign-in', component: SignComponent, canActivate: [LogGuard]},
       {path: 'sign-up', component: SignUpComponent,  canActivate: [LogGuard]},
@@ -24,9 +21,6 @@ const routes: Routes = [
       {path: 'add-question', component: AddQuestionComponent, canActivate: [AuthGuard], },
       {path: 'question/:id', component: QuestionPageComponent, canActivate: [AuthGuard], },
       {path: 'question/:id/edit', component: EditQuestionComponent, canActivate: [AuthGuard], },
-
-    ]
-  },
 ];
 
 @NgModule({

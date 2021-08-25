@@ -11,6 +11,8 @@ import {MatCheckboxModule} from "@angular/material/checkbox";
 import {MatCardModule} from "@angular/material/card";
 import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
 import {MatGridListModule} from "@angular/material/grid-list";
+import {MatButtonToggleModule} from "@angular/material/button-toggle";
+import {MatRadioModule} from "@angular/material/radio";
 
 const material = [
   MatButtonModule,
@@ -24,7 +26,9 @@ const material = [
   MatCheckboxModule,
   MatCardModule,
   MatProgressSpinnerModule,
-  MatGridListModule
+  MatGridListModule,
+  MatButtonToggleModule,
+  MatRadioModule
 ]
 
 @NgModule({

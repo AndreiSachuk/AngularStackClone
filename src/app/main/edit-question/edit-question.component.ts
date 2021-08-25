@@ -22,7 +22,6 @@ export class EditQuestionComponent implements OnInit {
   isSubmitted = false
   checkedCategoriesForm: FormArray
   canAddCheckedCategories:boolean = true
-  id: string;
 
   constructor(private route: ActivatedRoute,
               private questionService: TransferQuestionsService,
@@ -32,14 +31,12 @@ export class EditQuestionComponent implements OnInit {
               private errService: ErrService,){
   }
 
-
   ngOnInit(): void {
     this.route.params.pipe(
       switchMap(params => this.questionService.getQuestionById(params['id'])
       )
     ).subscribe(res => {
       this.question = res
-      this.id = res.id
       for (let category of myGlobal.categories) {
         if (this.question.tags.includes(category)) {
           this.categoryList.push({category: category, isChecked: true})
@@ -60,7 +57,7 @@ export class EditQuestionComponent implements OnInit {
   }
 
   returnToQuestion(): void {
-    this.router.navigate([`/question/${this.id}`])
+    this.router.navigate([`/question/${this.question.id}`])
   }
 
   onCheckboxChange( e: Event) {
@@ -78,6 +75,7 @@ export class EditQuestionComponent implements OnInit {
     }
 
     const question: Question = {
+      id: this.question.id,
       title: this.formEditQuestion.value.title,
       text: this.formEditQuestion.value.text,
       tags: this.checkedCategoriesForm.value,
@@ -87,11 +85,11 @@ export class EditQuestionComponent implements OnInit {
       comments: this.question.comments
     }
 
-    this.questionService.updateQuestion(question, this.id)
+    this.questionService.updateQuestion(question)
       .subscribe(t => {
           this.returnToQuestion()
       },
-        error => this.errService.openDialog(error))
+        error => this.errService.openDialog(error.error.error))
   }
 
 }

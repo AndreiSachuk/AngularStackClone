@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {TransferQuestionsService} from "../../shared/services/transfer-questions.service";
 import {ActivatedRoute, Router,} from "@angular/router";
-import {find, map, switchMap, switchMapTo} from "rxjs/operators";
+import {map, switchMapTo} from "rxjs/operators";
 import {BehaviorSubject, Observable} from "rxjs";
 import {DomSanitizer} from "@angular/platform-browser";
 import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
@@ -18,9 +18,12 @@ export class QuestionPageComponent implements OnInit {
 
   question$: Observable<Question>
 
+  private request$ = new BehaviorSubject(true);
+
   formAddComment: FormGroup
   isSubmitted = false
   id: string;
+  question: Question;
 
   constructor(private questionService: TransferQuestionsService,
               private route: ActivatedRoute,
@@ -29,57 +32,51 @@ export class QuestionPageComponent implements OnInit {
               private authService: SharedAuthService,
               private router: Router,
               private errService: ErrService) {
+    this.route.params.subscribe((param) => {
+      this.id = param['id']
+      this.request$.next(true)
+    })
+    this.question$ = this.request$.pipe(
+      switchMapTo(this.questionService.getQuestionById(this.id)),
+      map((question: Question) => {
+        this.question = question
+        return question
+      }));
+  }
+
+  updateData() {
+    this.request$.next(true)
   }
 
   ngOnInit(): void {
     this.formAddComment = this.formBuilder.group({
       text: new FormControl(null, Validators.required),
     })
-
-    this.question$ = this.route.params.pipe(
-      switchMap(params => this.questionService.getQuestionById(params['id'])),
-      map((question: Question) => {
-        this.id = question.id
-        return question
-      })
-    )
-  }
-
-  event$ = new BehaviorSubject(true);
-
-  updateData(addr: string) {
-    this.question$ = this.event$.pipe(switchMapTo(this.questionService.getQuestionById(this.id)));
-    this.event$.next(true);
-    this.router.navigate([])
   }
 
   addComment() {
-    let question: Question
     let newComment: Comments = {
       date: new Date().getTime(),
       isDecision: false,
       user: this.authService.getUserInfo().email,
       text: this.formAddComment.controls['text'].value
     }
-    this.question$.pipe(find(question => question.id === this.id)).subscribe((res: Question) => {
-      question = res
-      question.comments ? question.comments.push(newComment) : question.comments = [newComment]
-      this.questionService.patchQuestion({['comments']: question.comments}, this.id)
+      this.question.comments ? this.question.comments.push(newComment) : this.question.comments = [newComment]
+      this.questionService.patchQuestion({['comments']: this.question.comments}, this.id)
         .subscribe(
           t => {
             this.formAddComment.reset()
-            this.updateData(`/question/${this.id}`)
+            this.updateData()
           },
           error => this.errService.openDialog(error)
         )
-    })
   }
 
   isApproved() {
     this.questionService.patchQuestion({['isApproved']: true}, this.id)
       .subscribe(
         t => {
-          this.updateData(`/question/${this.id}`)
+          this.updateData()
         },
         error => this.errService.openDialog(error.error.error)
       )
@@ -96,7 +93,7 @@ export class QuestionPageComponent implements OnInit {
   addDecision(idComment: number) {
     this.questionService.patchCommentsDecision({[`isDecision`]: true}, this.id, idComment)
       .subscribe(t => {
-          this.updateData(`/question/${this.id}`)
+          this.updateData()
         },
         error => this.errService.openDialog(error.error.error))
   }

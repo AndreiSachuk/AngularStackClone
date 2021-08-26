@@ -6,7 +6,6 @@
 
 $angular-primary: mat.define-palette(mat.$indigo-palette, 500, 100, 900);
 $angular-accent: mat.define-palette(mat.$pink-palette, A200, A100, A400);
-
 $angular-warn: mat.define-palette(mat.$red-palette);
 
 $angular-default-theme: mat.define-light-theme(
@@ -31,7 +30,7 @@ $angular-dark-theme: mat.define-dark-theme(
     )
 );
 
-.darkMode {
+.dark-theme {
   @include mat.all-component-colors($angular-dark-theme);
 }
 
@@ -42,3 +41,11 @@ $angular-dark-theme: mat.define-dark-theme(
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
+.ql-snow *{
+  background: white!important;
+  color: black;
+}
+
+.ql-toolbar.ql-snow {
+  background: white !important;
+}

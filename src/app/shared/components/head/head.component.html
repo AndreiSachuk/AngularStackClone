@@ -4,11 +4,17 @@
     <a mat-button class="font" routerLink="/dashboard"><i class="fa fa-coffee"></i> StackClone</a>
   </div>
   <div *ngIf="!authService.getUserInfo(); else authOK">
+    <button mat-button value="mode" aria-label="Row view" (click)="changeTheme()">
+      <mat-icon>dark_mode</mat-icon>
+    </button>
     <a mat-button routerLink="/sign-in">Sign In</a>
     <a mat-button routerLink="/sign-up">Sign Up</a>
   </div>
   <ng-template #authOK>
     <div>
+      <button mat-button value="mode" aria-label="Row view" (click)="changeTheme()">
+        <mat-icon>dark_mode</mat-icon>
+      </button>
       <a mat-button routerLink="/add-question">ADD QUESTION</a>
       <button mat-button [matMenuTriggerFor]="menu">User</button>
       <mat-menu #menu="matMenu">

@@ -1,7 +1,7 @@
 <div *ngIf="formEditQuestion; else loading">
 
   <form [formGroup]="formEditQuestion" (ngSubmit)="submit()" class="question__form">
-
+    <mat-card>
     <mat-card-content>
       <div class="question__main" >
         <div class="question__main-width">
@@ -47,7 +47,7 @@
     <button type="submit" mat-raised-button color="primary"
             [disabled]="formEditQuestion.invalid || isSubmitted"> Update question
     </button>
-
+  </mat-card>
   </form>
 
 </div>

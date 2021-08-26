@@ -45,6 +45,7 @@ import { FiltersPipe } from './shared/pipes/filters.pipe';
     EditQuestionComponent,
     SortPipe,
     FiltersPipe,
+    SortPipe,
 
   ],
   entryComponents: [DialogComponent],

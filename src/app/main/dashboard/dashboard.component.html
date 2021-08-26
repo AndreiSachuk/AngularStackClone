@@ -15,20 +15,18 @@
   </div>
 
   <div>
-    <button mat-button value="grid" aria-label="Grid view" (click)="view='grid'">
+    <button mat-button value="grid" aria-label="Grid view" (click)="setGridMode()">
       <mat-icon>grid_view</mat-icon>
     </button>
-    <button mat-button value="row" aria-label="Row view" (click)="view='row'">
+    <button mat-button value="row" aria-label="Row view" (click)="setRowMode()">
       <mat-icon>calendar_view_day</mat-icon>
     </button>
-    <button mat-button value="mode" aria-label="Row view" (click)="changeTheme()">
-      <mat-icon>dark_mode</mat-icon>
-    </button>
+
   </div>
 
 </mat-toolbar>
 
-<mat-toolbar color="primary" class="navbar" *ngIf="filters" style="display: flex">
+<mat-toolbar color="primary" class="navbar" *ngIf="isFiltersShow" style="display: flex">
   <div>
     <section class="example-section" [formGroup]="checkboxCategories">
       <h4>Select your categories:</h4>
@@ -74,25 +72,18 @@
   </div>
 </mat-toolbar>
 
-<mat-toolbar color="primary" class="navbar" *ngIf="settings">
-
-
-</mat-toolbar>
-
 <div *ngIf="questions$ | async as questions" class="question__content" >
-  <div fxLayout="row wrap" fxLayoutGap="16px grid" *ngIf="view==='grid'">
-    <app-question *ngFor="let question of questions | filters: checkboxCategories.value : timeSelect: decisionSelect |
-    sort: 'date' : sorting " [question]="question" [view]="view" fxFlex="25%" fxFlex.xs="100%" fxFlex.md="33%"
-                  fxFlex.sm="50%" (onChanged)="onChanged()" (categoryChanged) = "addCategoryToFilter($event)">
+  <div fxLayout="row wrap" fxLayoutGap="16px grid" >
+    <app-question *ngFor="let question of questions
+                  |filters: checkboxCategories.value : getTimeFilter(timeSelect) : decisionSelect
+                  |sort: 'date' : sorting "
+                  [question]="question" [view]="view" fxFlex.xs="100%"
+                  [fxFlex]="(view==='grid') ? '25%': '100%'"
+                  [fxFlex.md]="(view==='grid') ? '33%': '100%'"
+                  [fxFlex.sm]="(view==='grid') ? '50%': '100%'"
+                  (onChanged)="onChanged()" (categoryChanged) = "addCategoryToFilter($event)">
     </app-question>
   </div>
-
-  <div *ngIf="view==='row'">
-    <app-question *ngFor="let question of questions | filters: checkboxCategories.value : timeSelect: decisionSelect |
-                    sort: 'date' : sorting " [question]="question" [view]="view" (onChanged)="onChanged()" (categoryChanged) = "addCategoryToFilter($event)">
-    </app-question>
-  </div>
-
 </div>
 
 <div class="add-button">
@@ -101,4 +92,3 @@
   </button>
 </div>
 
-<router-outlet></router-outlet>

@@ -2,6 +2,8 @@ import {Component, OnInit} from '@angular/core';
 import {SharedAuthService} from "../../services/shared-auth.service";
 import {Router} from "@angular/router";
 import {UserInfo} from "../../interfaces";
+import {OverlayContainer} from "@angular/cdk/overlay";
+import {AppThemes, ThemeService} from "../../services/theme.service";
 
 @Component({
   selector: 'app-head',
@@ -13,7 +15,14 @@ export class HeadComponent implements OnInit {
   public userInfo: UserInfo = this.authService.getUserInfo()
 
   constructor(public authService: SharedAuthService,
-              private routerService: Router,) {  }
+              private routerService: Router,
+              private overlayContainer: OverlayContainer,
+              private themeService: ThemeService,) {
+    themeService.getTheme().subscribe(data => {
+      if (data === AppThemes.light) overlayContainer.getContainerElement().classList.remove(AppThemes.dark);
+      else overlayContainer.getContainerElement().classList.add(AppThemes.dark);
+    });
+  }
 
   ngOnInit(): void {
   }
@@ -25,4 +34,7 @@ export class HeadComponent implements OnInit {
       })
   }
 
+  changeTheme() {
+    this.themeService.toggleTheme()
+  }
 }

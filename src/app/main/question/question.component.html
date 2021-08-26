@@ -10,7 +10,7 @@
     </div>
 
     <div *ngFor="let category of question.tags" class="inline-block">
-      <a routerLink="">{{category}}</a>
+      <a (click)="addCategoryToFilter(category)">{{category}}</a>
     </div>
   </mat-card-content>
   <mat-card-actions class="margin-auto">
@@ -26,20 +26,17 @@
   <div style="width: 15%">
     {{question.date | date:'medium'}}
   </div>
-  <div style="justify-content: start; width: 30%">
+  <div style="justify-content: start; width: 55%">
     <a [routerLink]="['/question', question.id]">{{question.title}}</a>
   </div>
 
-  <div style="width: 10%">
+  <div style="width: 5%">
     <div *ngFor="let category of question.tags" style="justify-content: start; ">
-      <a routerLink="">{{category}}</a>
+      <a (click)="addCategoryToFilter(category)">{{category}}</a>
     </div>
   </div>
 
-
-
-
-  <div>
+  <div style="width: 20%; text-align: right">
     <button mat-button (click)=" isApproved()" *ngIf="!question.isApproved">Approve</button>
     <button mat-button (click)=" deleteQuestion()">Delete</button>
     <button mat-button [routerLink]="['/question', question.id]">Open</button>

@@ -14,6 +14,7 @@ export class QuestionComponent implements OnInit {
   @Input() question: Question;
   @Input() view: string;
   @Output() onChanged = new EventEmitter();
+  @Output() categoryChanged = new EventEmitter<string>();
 
   constructor(public sanitaizer: DomSanitizer,
               private questionService: TransferQuestionsService,
@@ -21,6 +22,10 @@ export class QuestionComponent implements OnInit {
   }
 
   ngOnInit(): void {
+  }
+
+  addCategoryToFilter(category: string){
+    this.categoryChanged.emit(category)
   }
 
   update() {

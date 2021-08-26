@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, Inject, NgZone, OnInit, Renderer2} from '@angular/core';
 import {SharedAuthService} from "../../shared/services/shared-auth.service";
 import {FormBuilder, FormControl, FormGroup} from "@angular/forms";
 import {TransferQuestionsService} from "../../shared/services/transfer-questions.service";
@@ -7,7 +7,7 @@ import {Question} from "../../shared/interfaces";
 import {ActivatedRoute} from "@angular/router";
 import {map, switchMapTo} from "rxjs/operators";
 import {categories} from "../../shared/constants";
-import {ErrService} from "../../shared/services/err.service";
+import {DOCUMENT} from "@angular/common";
 
 @Component({
   selector: 'app-dashboard',
@@ -20,7 +20,7 @@ export class DashboardComponent implements OnInit {
   userInfo = this.authService.getUserInfo()
   categories = new FormControl();
   categoriesList: string[] = categories
-  checkCategoriesList = Object.assign({}, ...this.categoriesList.map(n => ({ [n]: false })))
+  checkCategoriesList = Object.assign({}, ...this.categoriesList.map(n => ({[n]: false})))
 
   sorting: boolean = false;
 
@@ -37,12 +37,15 @@ export class DashboardComponent implements OnInit {
 
   checkboxCategories: FormGroup;
   view: string = 'grid';
+  theme = false
 
   constructor(private authService: SharedAuthService,
               private questionService: TransferQuestionsService,
               private route: ActivatedRoute,
               private formBuilder: FormBuilder,
-              ) {
+              @Inject(DOCUMENT) private document: Document,
+              private renderer: Renderer2,
+  ) {
     this.route.params.subscribe((param) => {
       this.id = param['id']
       this.request$.next(true)
@@ -63,11 +66,15 @@ export class DashboardComponent implements OnInit {
     });
   }
 
+  addCategoryToFilter(category:string){
+    this.checkboxCategories.controls[category].setValue(true);
+  }
+
   onChanged() {
     this.request$.next(true)
   }
 
-  filtersMenu(){
+  filtersMenu() {
     this.filters = !this.filters
   }
 
@@ -77,6 +84,11 @@ export class DashboardComponent implements OnInit {
 
 
   changeTheme() {
-
+    this.theme = !this.theme
+    if (this.theme) {
+      this.renderer.addClass(this.document.body, 'darkMode');
+    } else {
+      this.renderer.removeClass(this.document.body, 'darkMode');
+    }
   }
 }

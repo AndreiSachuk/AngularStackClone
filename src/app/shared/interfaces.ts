@@ -24,7 +24,7 @@ export interface Question{
   user: string,
   isApproved: boolean,
   isResolved?: boolean,
-  comments: Array<Comments>
+  comments: Comments[]
 }
 
 export interface FbResponse{

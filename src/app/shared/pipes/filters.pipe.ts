@@ -16,9 +16,7 @@ export class FiltersPipe implements PipeTransform {
 
     return questions
       .filter(question => date ? question.date > new Date().getTime() - date * oneDayTimeStamp : true)
-      .filter(question => decision === 'Yes' ?
-                          question.isResolved : decision === 'No'?
-                          !question.isResolved : true)
+      .filter(question => decision === 'Yes' ? question.isResolved : decision === 'No'? !question.isResolved : true)
       .filter(question => selectedCategories.every(category => question.tags.includes(category)))
   }
 }

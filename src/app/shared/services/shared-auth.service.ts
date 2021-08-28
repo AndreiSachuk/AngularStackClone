@@ -1,9 +1,11 @@
 import {Injectable} from '@angular/core';
-import { AngularFireAuth } from '@angular/fire/auth';
+import {AngularFireAuth} from '@angular/fire/auth';
 import {Observable} from "rxjs";
 import {map} from "rxjs/operators";
 import firebase from "firebase/app";
 import {UserInfo} from "../interfaces";
+import {environment} from "../../../environments/environment";
+import {HttpClient} from "@angular/common/http";
 
 
 @Injectable({
@@ -12,8 +14,12 @@ import {UserInfo} from "../interfaces";
 export class SharedAuthService {
 
   private user: UserInfo
+  private boolAdmin: boolean
 
-  constructor(private authService: AngularFireAuth,) {
+  constructor(private authService: AngularFireAuth,
+              private http: HttpClient) {
+    this.checkAuth()
+    this.getAdmins()
   }
 
   signUp(email: string, password: string): Promise<object> {
@@ -40,6 +46,7 @@ export class SharedAuthService {
   }
 
   signOut(): Promise<void> {
+    this.user = undefined
     return this.authService.signOut()
   }
 
@@ -47,12 +54,26 @@ export class SharedAuthService {
     return this.user
   }
 
-  checkAuth(): Observable<firebase.User | null> {
-    return this.authService.authState.pipe(
-      map((user)=> {
-        this.user = user
-        return user
+  isAdmin(): boolean {
+    return this.boolAdmin
+  }
+
+  getAdmins(): Observable<Object> {
+    return  this.http.get(`${environment.fbDbQuestUrl}/admins.json`)
+      .pipe(
+      map((res:any) => {
+        this.boolAdmin = res.includes(this.user?.email)
+        return res
       }
     ))
+  }
+
+  checkAuth(): Observable<firebase.User | null> {
+    return this.authService.authState.pipe(
+      map((user) => {
+          this.user = user
+          return user
+        }
+      ))
   }
 }

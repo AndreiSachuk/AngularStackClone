@@ -25,9 +25,9 @@
 
       </div>
       <div>
-        <button mat-button (click)=" isApproved()" *ngIf="!question.isApproved">Approve</button>
-        <button mat-button (click)="deleteQuestion()">Delete</button>
-        <button mat-button [routerLink]="['/question', question.id,'edit']">Edit</button>
+        <button mat-button (click)=" isApproved()" *ngIf="!question.isApproved && isAdmin">Approve</button>
+        <button mat-button (click)="deleteQuestion()" *ngIf="isAdmin">Delete</button>
+        <button mat-button [routerLink]="['/question', question.id,'edit']" *ngIf="question.user === currentEmail && !question.isApproved">Edit</button>
       </div>
     </mat-card-actions>
 
@@ -65,12 +65,14 @@
           <div class="question__comments-comment" >
             <div [innerHTML]="sanitaizer.bypassSecurityTrustHtml(comment.text)"></div>
           </div>
-          <div class="question__comments-decision"  *ngIf="comment.isDecision">
-            <mat-icon aria-hidden="false">done</mat-icon>
-          </div>
-          <div class="question__comments-decision" *ngIf="!comment.isDecision">
-            <button mat-raised-button (click)="addDecision(i)" >Add to decision</button>
-          </div>
+
+            <div class="question__comments-decision"  *ngIf="comment.isDecision">
+              <mat-icon aria-hidden="false" style="color: green">done</mat-icon>
+            </div>
+            <div class="question__comments-decision" *ngIf="!comment.isDecision && (question.user === currentEmail)">
+              <button mat-raised-button (click)="addDecision(i)" >Add to decision</button>
+            </div>
+
         </mat-card>
       </div>
       <!--    !!!!!!!!!!PARSE COMMENTS STOP-->

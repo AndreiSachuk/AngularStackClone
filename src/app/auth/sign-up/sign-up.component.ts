@@ -38,10 +38,10 @@ export class SignUpComponent implements OnInit {
 
     this.authService.signUp(this.form.value.email, this.form.value.password)
       .then(res => {
+        this.authService.getAdmins().subscribe()
         this.form.reset()
         this.router.navigate(['/sign-in'])
         this.isSubmitted = false
-
       })
       .catch(err => {
         this.errService.openDialog(err.message)
@@ -55,6 +55,7 @@ export class SignUpComponent implements OnInit {
   signInGoogle() {
     this.authService.signInWithGoogle()
       .then(r => {
+          this.authService.getAdmins().subscribe()
           this.ngZone.run(()=> this.router.navigate(['/dashboard']))
         }
       )
@@ -65,7 +66,10 @@ export class SignUpComponent implements OnInit {
 
   signInFacebook() {
     this.authService.signInWithFacebook()
-      .then(r => this.ngZone.run(()=> this.router.navigate(['/dashboard'])))
+      .then(r => this.ngZone.run(()=> {
+        this.authService.getAdmins().subscribe()
+        this.router.navigate(['/dashboard'])}
+      ))
       .catch(err => {
         this.errService.openDialog(err.message)
       })
@@ -73,7 +77,10 @@ export class SignUpComponent implements OnInit {
 
   signInGithub() {
     this.authService.signInWithGithub()
-      .then(r => this.ngZone.run(()=> this.router.navigate(['/dashboard'])))
+      .then(r => this.ngZone.run(()=> {
+        this.authService.getAdmins().subscribe()
+        this.router.navigate(['/dashboard'])
+      }))
       .catch(err => {
         this.errService.openDialog(err.message)
       })

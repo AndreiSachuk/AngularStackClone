@@ -14,8 +14,8 @@
     </div>
   </mat-card-content>
   <mat-card-actions class="margin-auto">
-    <button mat-button (click)=" isApproved()" *ngIf="!question.isApproved">Approve</button>
-    <button mat-button (click)=" deleteQuestion()">Delete</button>
+    <button mat-button (click)=" isApproved()" *ngIf="!question.isApproved && isAdmin">Approve</button>
+    <button mat-button (click)=" deleteQuestion()" *ngIf="isAdmin">Delete</button>
     <button mat-button [routerLink]="['/question', question.id]">Open</button>
   </mat-card-actions>
 </mat-card>
@@ -36,8 +36,8 @@
   </div>
 
   <div style="width: 20%; text-align: right">
-    <button mat-button (click)=" isApproved()" *ngIf="!question.isApproved">Approve</button>
-    <button mat-button (click)=" deleteQuestion()">Delete</button>
+    <button mat-button (click)=" isApproved()" *ngIf="!question.isApproved && isAdmin">Approve</button>
+    <button mat-button (click)=" deleteQuestion()" *ngIf="isAdmin">Delete</button>
     <button mat-button [routerLink]="['/question', question.id]">Open</button>
   </div>
 

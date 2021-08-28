@@ -5,10 +5,10 @@
     </button>
   </div>
   <div>
-    <button mat-button (click)="sorting = true">
+    <button mat-button (click)="sortingDesc = true">
       <mat-icon>arrow_upward</mat-icon>
     </button>
-    <button mat-button (click)="sorting = false">
+    <button mat-button (click)="sortingDesc = false">
       <mat-icon>arrow_downward</mat-icon>
     </button>
 
@@ -65,6 +65,35 @@
       </mat-radio-group>
     </div>
   </div>
+
+  <div *ngIf="!isAdmin">
+    <div>
+      <label id="my-question">Is my question?</label>
+      <mat-radio-group
+        aria-labelledby="time-group-label"
+        class="time-group"
+        [(ngModel)]="isMyQuestionSelect">
+        <mat-radio-button class="time-group-button" *ngFor="let cat of isMyQuestionCategories" [value]="cat">
+          {{cat}}
+        </mat-radio-button>
+      </mat-radio-group>
+    </div>
+  </div>
+
+  <div *ngIf="isAdmin">
+    <div>
+      <label id="moderated">On moderation?</label>
+      <mat-radio-group
+        aria-labelledby="time-group-label"
+        class="time-group"
+        [(ngModel)]="onModerationQuestionSelect">
+        <mat-radio-button class="time-group-button" *ngFor="let cat of onModerationQuestionCategories" [value]="cat">
+          {{cat}}
+        </mat-radio-button>
+      </mat-radio-group>
+    </div>
+  </div>
+
   <div style="display: flex;  flex-direction: column;">
     <button mat-raised-button aria-label="Save filter" (click)="filtersMenu()" style="margin: 20px 0;"> Save filter
     </button>
@@ -75,8 +104,8 @@
 <div *ngIf="questions$ | async as questions" class="question__content" >
   <div fxLayout="row wrap" fxLayoutGap="16px grid" >
     <app-question *ngFor="let question of questions
-                  |filters: checkboxCategories.value : getTimeFilter(timeSelect) : decisionSelect
-                  |sort: 'date' : sorting "
+                  |filters: checkboxCategories.value : getTimeFilter(timeSelect) : decisionSelect : isMyQuestionSelect : onModerationQuestionSelect
+                  |sort: 'date' : sortingDesc "
                   [question]="question" [view]="view" fxFlex.xs="100%"
                   [fxFlex]="(view==='grid') ? '25%': '100%'"
                   [fxFlex.md]="(view==='grid') ? '33%': '100%'"
@@ -85,6 +114,7 @@
     </app-question>
   </div>
 </div>
+
 
 <div class="add-button">
   <button mat-fab aria-label="Add question" routerLink="/add-question">

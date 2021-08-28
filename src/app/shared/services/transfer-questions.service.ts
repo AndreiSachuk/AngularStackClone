@@ -26,6 +26,7 @@ export class TransferQuestionsService {
       )
   }
 
+
   getAllQuestions(): Observable<Question[]> {
     return this.http.get(`${environment.fbDbQuestUrl}/question.json`)
       .pipe(
@@ -64,6 +65,5 @@ export class TransferQuestionsService {
   patchCommentsDecision(updateComponent: { [key: string]: boolean }, id: string, commentNumber: number): Observable<Object> {
     return this.http.patch(`${environment.fbDbQuestUrl}/question/${id}/comments/${commentNumber}.json`, updateComponent)
   }
-
 
 }

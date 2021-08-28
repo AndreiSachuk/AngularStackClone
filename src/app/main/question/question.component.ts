@@ -3,6 +3,7 @@ import {Question} from "../../shared/interfaces";
 import {DomSanitizer} from "@angular/platform-browser";
 import {TransferQuestionsService} from "../../shared/services/transfer-questions.service";
 import {ErrService} from "../../shared/services/err.service";
+import {SharedAuthService} from "../../shared/services/shared-auth.service";
 
 @Component({
   selector: 'app-question',
@@ -15,13 +16,16 @@ export class QuestionComponent implements OnInit {
   @Input() view: string;
   @Output() onChanged = new EventEmitter();
   @Output() categoryChanged = new EventEmitter<string>();
+  public isAdmin: boolean
 
   constructor(public sanitaizer: DomSanitizer,
               private questionService: TransferQuestionsService,
-              private errService: ErrService) {
+              private errService: ErrService,
+              private authService: SharedAuthService) {
   }
 
   ngOnInit(): void {
+    this.isAdmin = this.authService.isAdmin()
   }
 
   addCategoryToFilter(category: string){

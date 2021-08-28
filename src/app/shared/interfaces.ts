@@ -5,6 +5,7 @@ export interface UserInfo {
   displayName?: string;
   photoUrl?: string,
   emailVerified?: boolean,
+  isAdmin?: boolean
 }
 
 export interface Comments{

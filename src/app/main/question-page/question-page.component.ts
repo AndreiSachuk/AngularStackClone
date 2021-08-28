@@ -24,7 +24,9 @@ export class QuestionPageComponent implements OnInit {
   formAddComment: FormGroup
   isSubmitted = false
   id: string;
+  public currentEmail : string
   question: Question;
+  public isAdmin: boolean;
 
   constructor(private questionService: TransferQuestionsService,
               private route: ActivatedRoute,
@@ -43,6 +45,7 @@ export class QuestionPageComponent implements OnInit {
         this.question = question
         return question
       }));
+    this.currentEmail = this.authService.getUserInfo().email
   }
 
   updateData() {
@@ -53,6 +56,7 @@ export class QuestionPageComponent implements OnInit {
     this.formAddComment = this.formBuilder.group({
       text: new FormControl(null, Validators.required),
     })
+    this.isAdmin = this.authService.isAdmin()
   }
 
   addComment() {

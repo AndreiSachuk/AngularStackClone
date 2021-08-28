@@ -59,7 +59,7 @@ import { FiltersPipe } from './shared/pipes/filters.pipe';
     BrowserAnimationsModule,
     AngularFireModule.initializeApp(environment.firebase),
     MatMenuModule,
-    QuillModule,
+    QuillModule.forRoot(),
     HttpClientModule,
     FlexLayoutModule,
 

@@ -46,11 +46,14 @@ export class QuestionPageComponent implements OnInit {
         return question
       }));
     this.currentEmail = this.authService.getUserInfo().email
+
   }
+
 
   updateData() {
     this.request$.next(true)
   }
+
 
   ngOnInit(): void {
     this.formAddComment = this.formBuilder.group({

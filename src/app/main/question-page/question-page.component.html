@@ -42,7 +42,7 @@
         <div>
           <div class="question__margin">
             <label for="text"><sub>Add your comment</sub></label>
-            <quill-editor theme="snow" formControlName="text" id="text"></quill-editor>
+            <quill-editor formControlName="text" id="text"></quill-editor>
             <div *ngIf="formAddComment.controls['text'].touched && formAddComment.controls['text'].invalid">
               <small *ngIf="formAddComment.controls['text'].errors?.required">Enter your comment</small>
             </div>

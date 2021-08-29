@@ -67,7 +67,7 @@
           </div>
 
             <div class="question__comments-decision"  *ngIf="comment.isDecision">
-              <mat-icon aria-hidden="false" style="color: green">done</mat-icon>
+              <mat-icon aria-hidden="false" class="green">done</mat-icon>
             </div>
             <div class="question__comments-decision" *ngIf="!comment.isDecision && (question.user === currentEmail)">
               <button mat-raised-button (click)="addDecision(i)" >Add to decision</button>

@@ -18,8 +18,6 @@ export class SharedAuthService {
 
   constructor(private authService: AngularFireAuth,
               private http: HttpClient) {
-    this.checkAuth()
-    this.getAdmins()
   }
 
   signUp(email: string, password: string): Promise<object> {
@@ -58,19 +56,21 @@ export class SharedAuthService {
     return this.boolAdmin
   }
 
-  getAdmins(): Observable<Object> {
-    return  this.http.get(`${environment.fbDbQuestUrl}/admins.json`)
-      .pipe(
-      map((res:any) => {
+  getAdmins(): any {
+     return this.http.get(`${environment.fbDbQuestUrl}/admins.json`)
+      .subscribe(
+      (res:any) => {
         this.boolAdmin = res.includes(this.user?.email)
+        console.log('getAdmins()' + this.boolAdmin)
         return res
       }
-    ))
+    )
   }
 
   checkAuth(): Observable<firebase.User | null> {
     return this.authService.authState.pipe(
       map((user) => {
+        console.log('checkAuth()')
           this.user = user
           return user
         }

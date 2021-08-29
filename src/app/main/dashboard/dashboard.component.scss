@@ -57,3 +57,11 @@ mat-button-toggle {
 .mat-toolbar-row, .mat-toolbar-single-row {
   align-items: start ;;
 }
+
+.flex{
+  display: flex;
+}
+
+.flex-column{
+  flex-direction: column;
+}

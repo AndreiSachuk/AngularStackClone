@@ -1,4 +1,4 @@
-import {Component,  OnInit, } from '@angular/core';
+import {Component, OnInit,} from '@angular/core';
 import {SharedAuthService} from "../../shared/services/shared-auth.service";
 import {FormBuilder, FormGroup} from "@angular/forms";
 import {TransferQuestionsService} from "../../shared/services/transfer-questions.service";
@@ -8,10 +8,14 @@ import {ActivatedRoute} from "@angular/router";
 import {switchMapTo} from "rxjs/operators";
 import {
   categories,
+  decisionCategories,
+  decisionSelectDefault,
+  isMyQuestion,
+  isMyQuestionCategories,
+  onModerationQuestionCategories,
+  onModerationQuestionDefault,
   timeCategories,
   timeSelectDefault,
-  decisionSelectDefault,
-  decisionCategories, onModerationQuestionCategories, isMyQuestionCategories, onModerationQuestionDefault, isMyQuestion,
 } from "../../shared/constants";
 
 
@@ -32,7 +36,7 @@ export class DashboardComponent implements OnInit {
   private id: string;
   isFiltersShow: boolean = false;
   timeSelect: string
-  timeCategories= timeCategories
+  timeCategories = timeCategories
 
   decisionSelect: string;
   decisionCategories = decisionCategories
@@ -44,24 +48,15 @@ export class DashboardComponent implements OnInit {
   isMyQuestionCategories = isMyQuestionCategories
 
   checkboxCategories: FormGroup;
-  view: string ;
-  public isAdmin: boolean
+  view: string;
+  public isAdmin: boolean = undefined
 
 
   constructor(private authService: SharedAuthService,
               private questionService: TransferQuestionsService,
               private route: ActivatedRoute,
               private formBuilder: FormBuilder,
-
-
   ) {
-    if (this.authService.isAdmin()===undefined)
-      this.authService.getAdmins().subscribe(
-        x=>
-        this.isAdmin = this.authService.isAdmin()
-      )
-
-
     this.view = JSON.parse(localStorage.getItem("view")) || 'grid';
 
     this.route.params.subscribe((param) => {
@@ -73,7 +68,9 @@ export class DashboardComponent implements OnInit {
       switchMapTo(this.questionService.getAllQuestions()));
   }
 
-  ngOnInit(): void {
+  ngOnInit() {
+    this.isAdmin = this.authService.isAdmin()
+    console.log('ngOnInint' + this.isAdmin)
     this.timeSelect = timeSelectDefault
     this.decisionSelect = decisionSelectDefault
     this.onModerationQuestionSelect = onModerationQuestionDefault
@@ -83,7 +80,27 @@ export class DashboardComponent implements OnInit {
     });
   }
 
-  addCategoryToFilter(category:string){
+  // ngOnInit(): void {
+  //   if (this.authService.isAdmin() === undefined) {
+  //     this.authService.getAdmins()
+  //     setTimeout(() => {
+  //       this.isAdmin = this.authService.isAdmin()
+  //       console.log('ngOnInit  IF' + this.isAdmin)
+  //     }, 200)
+  //   } else {
+  //     this.isAdmin = this.authService.isAdmin()
+  //     console.log('!ngOnInit' + this.isAdmin)
+  //   }
+  //   this.timeSelect = timeSelectDefault
+  //   this.decisionSelect = decisionSelectDefault
+  //   this.onModerationQuestionSelect = onModerationQuestionDefault
+  //   this.isMyQuestionSelect = isMyQuestion
+  //   this.checkboxCategories = this.formBuilder.group({
+  //     ...this.checkCategoriesList
+  //   });
+  // }
+
+  addCategoryToFilter(category: string) {
     this.checkboxCategories.controls[category].setValue(!this.checkboxCategories.controls[category].value);
   }
 
@@ -95,7 +112,7 @@ export class DashboardComponent implements OnInit {
     this.isFiltersShow = !this.isFiltersShow
   }
 
-  getTimeFilter(timeInterval:string): number {
+  getTimeFilter(timeInterval: string): number {
     switch (timeInterval) {
       case 'Day':
         return 1
@@ -108,12 +125,12 @@ export class DashboardComponent implements OnInit {
   }
 
   setGridMode() {
-    this.view='grid';
+    this.view = 'grid';
     localStorage.setItem("view", JSON.stringify(this.view));
   }
 
   setRowMode() {
-    this.view='row';
+    this.view = 'row';
     localStorage.setItem("view", JSON.stringify(this.view));
   }
 }

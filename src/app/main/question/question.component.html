@@ -13,29 +13,29 @@
       <a (click)="addCategoryToFilter(category)">{{category}}</a>
     </div>
   </mat-card-content>
-  <mat-card-actions class="margin-auto">
+  <mat-card-actions class="margin-auto button_controls">
     <button mat-button (click)=" isApproved()" *ngIf="!question.isApproved && isAdmin">Approve</button>
     <button mat-button (click)=" deleteQuestion()" *ngIf="isAdmin">Delete</button>
     <button mat-button [routerLink]="['/question', question.id]">Open</button>
   </mat-card-actions>
 </mat-card>
 
-<mat-card  *ngIf="view==='row'" style="display: flex; justify-content: space-between; align-items: center; ">
+<mat-card  *ngIf="view==='row'" class="row">
 
-  <div style="width: 15%">
+  <div class="row__date">
     {{question.date | date:'medium'}}
   </div>
-  <div style="justify-content: start; width: 55%">
+  <div class="row__question">
     <a [routerLink]="['/question', question.id]">{{question.title}}</a>
   </div>
 
-  <div style="width: 5%">
-    <div *ngFor="let category of question.tags" style="justify-content: start; ">
+  <div class="row__category">
+    <div *ngFor="let category of question.tags" >
       <a (click)="addCategoryToFilter(category)">{{category}}</a>
     </div>
   </div>
 
-  <div style="width: 20%; text-align: right">
+  <div class="row__controls button_controls">
     <button mat-button (click)=" isApproved()" *ngIf="!question.isApproved && isAdmin">Approve</button>
     <button mat-button (click)=" deleteQuestion()" *ngIf="isAdmin">Delete</button>
     <button mat-button [routerLink]="['/question', question.id]">Open</button>

@@ -14,8 +14,9 @@ export class FiltersPipe implements PipeTransform {
   isAdmin: boolean
   constructor(private authService: SharedAuthService,
   ) {
+    if (!this.user){
     this.user = this.authService.getUserInfo()
-    this.isAdmin = this.authService.isAdmin()
+    }
   }
 
   transform(questions: Question[], selectCategories: {[key: string]: boolean | undefined}, date: number, decision: string, myQuestion: string, onModeration: string): Question[] {
@@ -28,7 +29,7 @@ export class FiltersPipe implements PipeTransform {
       .filter(question => selectedCategories.every(category => question.tags.includes(category)))
       .filter(question => myQuestion === 'Yes' ? question.user === this.user.email : myQuestion === 'No'? question.user !== this.user.email : true)
       .filter(question => onModeration === 'Yes' ? !question.isApproved : onModeration === 'No'? question.isApproved : true)
-      .filter(question => this.isAdmin ? true : question.user === this.user.email ? true : question.isApproved)
+      .filter(question => this.authService.isAdmin() ? true : question.user === this.user.email ? true : question.isApproved)
 
   }
 }

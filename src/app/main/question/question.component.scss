@@ -16,3 +16,27 @@ a{
 .margin-auto{
   margin: auto;
 }
+
+.button_controls{
+  display: flex;
+  flex-direction: row-reverse;
+}
+
+.row{
+  display: flex;
+  justify-content: space-between;
+  lign-items: center;
+  &__date{
+    width: 15%;
+  }
+  &__question{
+    justify-content: start;
+    width: 55%;
+  }
+  &__category{
+    width: 5%;
+  }
+  &__controls{
+    width: 20%;
+  }
+}

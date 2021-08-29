@@ -39,8 +39,7 @@ export class SignComponent implements OnInit {
       .then(res => {
         this.form.reset()
         this.isSubmitted = false
-        this.authService.getAdmins()
-          .then(res => this.router.navigate(['/dashboard']))
+        this.router.navigate(['/dashboard'])
       })
       .catch(err => {
         this.form.controls['password'].reset()
@@ -57,7 +56,6 @@ export class SignComponent implements OnInit {
   signInGoogle() {
     this.authService.signInWithGoogle()
       .then(r => {
-          this.authService.getAdmins()
           this.ngZone.run(()=> this.router.navigate(['/dashboard']))
         }
       )
@@ -69,9 +67,7 @@ export class SignComponent implements OnInit {
   signInFacebook() {
     this.authService.signInWithFacebook()
       .then(r => this.ngZone.run(()=> {
-          this.authService.getAdmins()
-            .then(res => this.router.navigate(['/dashboard']))
-        }
+        this.router.navigate(['/dashboard'])}
       ))
       .catch(err => {
         this.errService.openDialog(err.message)
@@ -81,7 +77,6 @@ export class SignComponent implements OnInit {
   signInGithub() {
     this.authService.signInWithGithub()
       .then(r => this.ngZone.run(()=> {
-        this.authService.getAdmins()
         this.router.navigate(['/dashboard'])
       }))
       .catch(err => {

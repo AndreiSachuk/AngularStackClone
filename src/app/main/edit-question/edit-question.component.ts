@@ -50,9 +50,10 @@ export class EditQuestionComponent implements OnInit {
         text: new FormControl(this.question.text, Validators.required),
         tags: this.formBuilder.array([],Validators.required)
       })
+
       this.checkedCategoriesForm = this.formEditQuestion.get('tags') as FormArray
-      for (let el of this.checkedCategories)
-        this.checkedCategoriesForm.push(new FormControl(el));
+
+      this.checkedCategories.forEach(el => this.checkedCategoriesForm.push(new FormControl(el)))
     })
   }
 

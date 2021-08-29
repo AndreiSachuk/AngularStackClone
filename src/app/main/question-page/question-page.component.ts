@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {TransferQuestionsService} from "../../shared/services/transfer-questions.service";
 import {ActivatedRoute, Router,} from "@angular/router";
-import {map, switchMapTo} from "rxjs/operators";
+import {map,  switchMapTo} from "rxjs/operators";
 import {BehaviorSubject, Observable} from "rxjs";
 import {DomSanitizer} from "@angular/platform-browser";
 import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
@@ -24,7 +24,7 @@ export class QuestionPageComponent implements OnInit {
   formAddComment: FormGroup
   isSubmitted = false
   id: string;
-  public currentEmail : string
+  public currentEmail: string
   question: Question;
   public isAdmin: boolean;
 
@@ -59,7 +59,7 @@ export class QuestionPageComponent implements OnInit {
     this.formAddComment = this.formBuilder.group({
       text: new FormControl(null, Validators.required),
     })
-    this.isAdmin = this.authService.isAdmin()
+    this.isAdmin = this.authService.getUserInfo().isAdmin
   }
 
   addComment() {
@@ -69,15 +69,15 @@ export class QuestionPageComponent implements OnInit {
       user: this.authService.getUserInfo().email,
       text: this.formAddComment.controls['text'].value
     }
-      this.question.comments ? this.question.comments.push(newComment) : this.question.comments = [newComment]
-      this.questionService.patchQuestion({['comments']: this.question.comments}, this.id)
-        .subscribe(
-          t => {
-            this.formAddComment.reset()
-            this.updateData()
-          },
-          error => this.errService.openDialog(error)
-        )
+    this.question.comments ? this.question.comments.push(newComment) : this.question.comments = [newComment]
+    this.questionService.patchQuestion({['comments']: this.question.comments}, this.id)
+      .subscribe(
+        t => {
+          this.formAddComment.reset()
+          this.updateData()
+        },
+        error => this.errService.openDialog(error)
+      )
   }
 
   isApproved() {
@@ -99,6 +99,16 @@ export class QuestionPageComponent implements OnInit {
         error => this.errService.openDialog(error.error.error))
   }
 
+  // addDecision(idComment: number) {
+  //   this.questionService.patchCommentsDecision({[`isDecision`]: true}, this.id, idComment)
+  //     .subscribe(t => {
+  //         this.questionService.patchQuestion({['isResolved']: true}, this.id)
+  //           .subscribe( t=>{
+  //             this.updateData()
+  //           })
+  //       },
+  //       error => this.errService.openDialog(error.error.error))
+  // }
   addDecision(idComment: number) {
     this.questionService.patchCommentsDecision({[`isDecision`]: true}, this.id, idComment)
       .subscribe(t => {
@@ -109,4 +119,5 @@ export class QuestionPageComponent implements OnInit {
         },
         error => this.errService.openDialog(error.error.error))
   }
-}
+
+ }

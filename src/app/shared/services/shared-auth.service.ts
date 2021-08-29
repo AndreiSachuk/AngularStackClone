@@ -1,20 +1,19 @@
 import {Injectable} from '@angular/core';
 import {AngularFireAuth} from '@angular/fire/auth';
-import {Observable} from "rxjs";
-import {map} from "rxjs/operators";
+import {Observable, of} from "rxjs";
+import {map, switchMap} from "rxjs/operators";
 import firebase from "firebase/app";
 import {UserInfo} from "../interfaces";
 import {environment} from "../../../environments/environment";
 import {HttpClient} from "@angular/common/http";
-
+import User = firebase.User;
 
 @Injectable({
   providedIn: 'root'
 })
 export class SharedAuthService {
 
-  private user: UserInfo
-  private boolAdmin: boolean
+  private user: User
 
   constructor(private authService: AngularFireAuth,
               private http: HttpClient) {
@@ -52,28 +51,33 @@ export class SharedAuthService {
     return this.user
   }
 
-  isAdmin(): boolean {
-    return this.boolAdmin
-  }
-
-  getAdmins(): any {
-     return this.http.get(`${environment.fbDbQuestUrl}/admins.json`)
-      .subscribe(
-      (res:any) => {
-        this.boolAdmin = res.includes(this.user?.email)
-        console.log('getAdmins()' + this.boolAdmin)
-        return res
-      }
+  authState(): Observable<firebase.User | null> {
+    return this.authService.authState.pipe(
+      map((user) => {
+          this.user = user
+          return user
+        }
+      )
     )
   }
 
   checkAuth(): Observable<firebase.User | null> {
-    return this.authService.authState.pipe(
-      map((user) => {
-        console.log('checkAuth()')
-          this.user = user
-          return user
-        }
-      ))
+    if (this.user) {
+      return of(this.user)
+    } else {
+      return this.authState().pipe(
+        switchMap((res) => {
+            return this.http.get(`${environment.fbDbQuestUrl}/admins.json`).pipe(
+              map((admins: any) => {
+                if (this.user) {
+                  this.user.isAdmin = admins.includes(this.user?.email);
+                }
+                return res;
+              })
+            );
+          }
+        )
+      )
+    }
   }
 }

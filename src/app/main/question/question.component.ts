@@ -25,7 +25,7 @@ export class QuestionComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.isAdmin = this.authService.isAdmin()
+    this.isAdmin = this.authService.getUserInfo().isAdmin
   }
 
   addCategoryToFilter(category: string){

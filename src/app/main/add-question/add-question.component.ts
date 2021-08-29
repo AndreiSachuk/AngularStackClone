@@ -35,14 +35,12 @@ export class AddQuestionComponent implements OnInit {
       text: new FormControl(null, Validators.required),
       tags: this.formBuilder.array([], Validators.required)
     })
-    for (let category of myGlobal.categories)
-    {
-      this.categoryList.push({category: category, isChecked: false})
-    }
+
+    myGlobal.categories.forEach( category => this.categoryList.push({category: category, isChecked: false}))
+
   }
 
   onCheckboxChange(e: Event) : void{
-    console.log(e)
     const checkedCategories: FormArray = this.formAddQuestion.get('tags') as FormArray
 
     if ((e.target as HTMLInputElement).checked) {

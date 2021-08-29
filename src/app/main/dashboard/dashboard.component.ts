@@ -33,10 +33,10 @@ export class DashboardComponent implements OnInit {
   sortingDesc: boolean = false;
 
   private request$ = new BehaviorSubject(true);
-  private id: string;
+
   isFiltersShow: boolean = false;
-  timeSelect: string
-  timeCategories = timeCategories
+  timeSelect: number
+  timeCategories : { time: string, days: number }[]= timeCategories
 
   decisionSelect: string;
   decisionCategories = decisionCategories
@@ -44,23 +44,21 @@ export class DashboardComponent implements OnInit {
   onModerationQuestionSelect: string
   onModerationQuestionCategories = onModerationQuestionCategories
 
-  isMyQuestionSelect: string
-  isMyQuestionCategories = isMyQuestionCategories
+  isMyQuestionSelect: string  ///////////
+  isMyQuestionCategories = isMyQuestionCategories  ////////////
 
   checkboxCategories: FormGroup;
-  view: string;
+  viewType: string;
   public isAdmin: boolean = undefined
-
 
   constructor(private authService: SharedAuthService,
               private questionService: TransferQuestionsService,
               private route: ActivatedRoute,
               private formBuilder: FormBuilder,
   ) {
-    this.view = JSON.parse(localStorage.getItem("view")) || 'grid';
+    this.viewType = JSON.parse(localStorage.getItem("viewType")) || 'grid';
 
     this.route.params.subscribe((param) => {
-      this.id = param['id']
       this.request$.next(true)
     })
 
@@ -69,9 +67,8 @@ export class DashboardComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.isAdmin = this.authService.isAdmin()
-    console.log('ngOnInint' + this.isAdmin)
-    this.timeSelect = timeSelectDefault
+    this.isAdmin = this.authService.getUserInfo().isAdmin
+    this.timeSelect = timeSelectDefault.days
     this.decisionSelect = decisionSelectDefault
     this.onModerationQuestionSelect = onModerationQuestionDefault
     this.isMyQuestionSelect = isMyQuestion
@@ -79,26 +76,6 @@ export class DashboardComponent implements OnInit {
       ...this.checkCategoriesList
     });
   }
-
-  // ngOnInit(): void {
-  //   if (this.authService.isAdmin() === undefined) {
-  //     this.authService.getAdmins()
-  //     setTimeout(() => {
-  //       this.isAdmin = this.authService.isAdmin()
-  //       console.log('ngOnInit  IF' + this.isAdmin)
-  //     }, 200)
-  //   } else {
-  //     this.isAdmin = this.authService.isAdmin()
-  //     console.log('!ngOnInit' + this.isAdmin)
-  //   }
-  //   this.timeSelect = timeSelectDefault
-  //   this.decisionSelect = decisionSelectDefault
-  //   this.onModerationQuestionSelect = onModerationQuestionDefault
-  //   this.isMyQuestionSelect = isMyQuestion
-  //   this.checkboxCategories = this.formBuilder.group({
-  //     ...this.checkCategoriesList
-  //   });
-  // }
 
   addCategoryToFilter(category: string) {
     this.checkboxCategories.controls[category].setValue(!this.checkboxCategories.controls[category].value);
@@ -112,25 +89,9 @@ export class DashboardComponent implements OnInit {
     this.isFiltersShow = !this.isFiltersShow
   }
 
-  getTimeFilter(timeInterval: string): number {
-    switch (timeInterval) {
-      case 'Day':
-        return 1
-      case 'Week':
-        return 7
-      case 'Month':
-        return 30
-    }
-    return 0
+  setModeView(mode: string): void{
+    this.viewType = mode;
+    localStorage.setItem("viewType", `"${mode}"`);
   }
 
-  setGridMode() {
-    this.view = 'grid';
-    localStorage.setItem("view", JSON.stringify(this.view));
-  }
-
-  setRowMode() {
-    this.view = 'row';
-    localStorage.setItem("view", JSON.stringify(this.view));
-  }
 }

@@ -15,10 +15,10 @@
   </div>
 
   <div>
-    <button mat-button value="grid" aria-label="Grid view" (click)="setGridMode()">
+    <button mat-button value="grid" aria-label="Grid viewType" (click)="setModeView('grid')">
       <mat-icon>grid_view</mat-icon>
     </button>
-    <button mat-button value="row" aria-label="Row view" (click)="setRowMode()">
+    <button mat-button value="row" aria-label="Row viewType" (click)="setModeView('row')">
       <mat-icon>calendar_view_day</mat-icon>
     </button>
 
@@ -46,8 +46,8 @@
         aria-labelledby="time-group-label"
         class="time-group"
         [(ngModel)]="timeSelect">
-        <mat-radio-button class="time-group-button" *ngFor="let time of timeCategories" [value]="time">
-          {{time}}
+        <mat-radio-button class="time-group-button" *ngFor="let time of timeCategories" [value]="time.days">
+          {{time.time}}
         </mat-radio-button>
       </mat-radio-group>
     </div>
@@ -104,12 +104,12 @@
 <div *ngIf="questions$ | async as questions" class="question__content" >
   <div fxLayout="row wrap" fxLayoutGap="16px grid" >
     <app-question *ngFor="let question of questions
-                  |filters: checkboxCategories.value : getTimeFilter(timeSelect) : decisionSelect : isMyQuestionSelect : onModerationQuestionSelect
+                  |filters: checkboxCategories.value : timeSelect : decisionSelect : isMyQuestionSelect : onModerationQuestionSelect
                   |sort: 'date' : sortingDesc "
-                  [question]="question" [view]="view" fxFlex.xs="100%"
-                  [fxFlex]="(view==='grid') ? '25%': '100%'"
-                  [fxFlex.md]="(view==='grid') ? '33%': '100%'"
-                  [fxFlex.sm]="(view==='grid') ? '50%': '100%'"
+                  [question]="question" [view]="viewType" fxFlex.xs="100%"
+                  [fxFlex]="(viewType==='grid') ? '25%': '100%'"
+                  [fxFlex.md]="(viewType==='grid') ? '33%': '100%'"
+                  [fxFlex.sm]="(viewType==='grid') ? '50%': '100%'"
                   (onChanged)="onChanged()" (categoryChanged) = "addCategoryToFilter($event)">
     </app-question>
   </div>

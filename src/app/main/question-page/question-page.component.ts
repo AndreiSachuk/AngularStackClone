@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {TransferQuestionsService} from "../../shared/services/transfer-questions.service";
 import {ActivatedRoute, Router,} from "@angular/router";
-import {map,  switchMapTo} from "rxjs/operators";
+import {map, switchMap, switchMapTo} from "rxjs/operators";
 import {BehaviorSubject, Observable} from "rxjs";
 import {DomSanitizer} from "@angular/platform-browser";
 import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
@@ -99,25 +99,14 @@ export class QuestionPageComponent implements OnInit {
         error => this.errService.openDialog(error.error.error))
   }
 
-  // addDecision(idComment: number) {
-  //   this.questionService.patchCommentsDecision({[`isDecision`]: true}, this.id, idComment)
-  //     .subscribe(t => {
-  //         this.questionService.patchQuestion({['isResolved']: true}, this.id)
-  //           .subscribe( t=>{
-  //             this.updateData()
-  //           })
-  //       },
-  //       error => this.errService.openDialog(error.error.error))
-  // }
   addDecision(idComment: number) {
     this.questionService.patchCommentsDecision({[`isDecision`]: true}, this.id, idComment)
-      .subscribe(t => {
-          this.questionService.patchQuestion({['isResolved']: true}, this.id)
-            .subscribe( t=>{
-              this.updateData()
-            })
-        },
-        error => this.errService.openDialog(error.error.error))
+      .pipe(
+        switchMap(res => this.questionService.patchQuestion({['isResolved']: true}, this.id)))
+      .subscribe(
+        t => this.updateData(),
+        error => this.errService.openDialog(error.error.error)
+      )
   }
 
- }
+}

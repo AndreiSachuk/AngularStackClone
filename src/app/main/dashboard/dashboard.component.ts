@@ -36,7 +36,7 @@ export class DashboardComponent implements OnInit {
 
   isFiltersShow: boolean = false;
   timeSelect: number
-  timeCategories : { time: string, days: number }[]= timeCategories
+  timeCategories : { period: string, days: number }[]= timeCategories
 
   decisionSelect: string;
   decisionCategories = decisionCategories

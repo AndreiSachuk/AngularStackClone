@@ -46,8 +46,8 @@
         aria-labelledby="time-group-label"
         class="time-group"
         [(ngModel)]="timeSelect">
-        <mat-radio-button class="time-group-button" *ngFor="let time of timeCategories" [value]="time.days">
-          {{time.time}}
+        <mat-radio-button class="time-group-button" *ngFor="let period of timeCategories" [value]="period.days">
+          {{period.period}}
         </mat-radio-button>
       </mat-radio-group>
     </div>

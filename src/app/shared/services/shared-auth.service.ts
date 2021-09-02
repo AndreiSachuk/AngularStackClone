@@ -1,12 +1,13 @@
 import {Injectable} from '@angular/core';
 import {AngularFireAuth} from '@angular/fire/auth';
 import {Observable, of} from "rxjs";
-import {map, switchMap} from "rxjs/operators";
+import {map, switchMap, tap} from "rxjs/operators";
 import firebase from "firebase/app";
 import {UserInfo} from "../interfaces";
 import {environment} from "../../../environments/environment";
 import {HttpClient} from "@angular/common/http";
 import User = firebase.User;
+import UserCredential = firebase.auth.UserCredential;
 
 @Injectable({
   providedIn: 'root'
@@ -19,25 +20,25 @@ export class SharedAuthService {
               private http: HttpClient) {
   }
 
-  signUp(email: string, password: string): Promise<object> {
+  signUp(email: string, password: string): Promise<UserCredential> {
     return this.authService.createUserWithEmailAndPassword(email, password)
   }
 
-  signInWithEmail(email: string, password: string): Promise<object> {
+  signInWithEmail(email: string, password: string): Promise<UserCredential> {
     return this.authService.signInWithEmailAndPassword(email, password)
   }
 
-  signInWithGoogle(): Promise<object> {
+  signInWithGoogle(): Promise<UserCredential> {
     const provider = new firebase.auth.GoogleAuthProvider();
     return this.authService.signInWithPopup(provider)
   }
 
-  signInWithFacebook(): Promise<object> {
+  signInWithFacebook(): Promise<UserCredential> {
     const provider = new firebase.auth.FacebookAuthProvider();
     return this.authService.signInWithPopup(provider)
   }
 
-  signInWithGithub(): Promise<object> {
+  signInWithGithub(): Promise<UserCredential> {
     const provider = new firebase.auth.GithubAuthProvider();
     return this.authService.signInWithPopup(provider)
   }
@@ -53,7 +54,7 @@ export class SharedAuthService {
 
   authState(): Observable<firebase.User | null> {
     return this.authService.authState.pipe(
-      map((user) => {
+      tap((user) => {
           this.user = user
           return user
         }
@@ -61,23 +62,28 @@ export class SharedAuthService {
     )
   }
 
+  getAdmins(user: User|null): Observable<firebase.User | null> {
+    return this.http.get<string[]>(`${environment.fbDbQuestUrl}/admins.json`).pipe(
+      map((admins: string[]) => {
+        this.user.isAdmin = admins.includes(this.user.email);
+        return user;
+      })
+    )
+  }
+
+
   checkAuth(): Observable<firebase.User | null> {
     if (this.user) {
       return of(this.user)
-    } else {
-      return this.authState().pipe(
-        switchMap((res) => {
-            return this.http.get(`${environment.fbDbQuestUrl}/admins.json`).pipe(
-              map((admins: any) => {
-                if (this.user) {
-                  this.user.isAdmin = admins.includes(this.user?.email);
-                }
-                return res;
-              })
-            );
-          }
-        )
-      )
     }
+    return this.authState().pipe(
+      switchMap((user) => {
+        if (!user) {
+          return of(this.user)
+        }
+        return this.getAdmins(user)
+      })
+    )
   }
+
 }

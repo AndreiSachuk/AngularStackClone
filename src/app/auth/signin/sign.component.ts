@@ -53,7 +53,7 @@ export class SignComponent implements OnInit {
 
   }
 
-  signInGoogle() {
+  signInGoogle() : void {
     this.authService.signInWithGoogle()
       .then(r => {
           this.ngZone.run(()=> this.router.navigate(['/dashboard']))
@@ -64,7 +64,7 @@ export class SignComponent implements OnInit {
       })
   }
 
-  signInFacebook() {
+  signInFacebook() : void {
     this.authService.signInWithFacebook()
       .then(r => this.ngZone.run(()=> {
         this.router.navigate(['/dashboard'])}
@@ -74,7 +74,7 @@ export class SignComponent implements OnInit {
       })
   }
 
-  signInGithub() {
+  signInGithub() : void {
     this.authService.signInWithGithub()
       .then(r => this.ngZone.run(()=> {
         this.router.navigate(['/dashboard'])

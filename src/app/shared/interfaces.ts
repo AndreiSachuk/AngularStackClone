@@ -1,3 +1,7 @@
+export interface AllQuestions{
+  [key: string]: Question
+}
+
 export interface UserInfo  {
   uid?: string;
   email?: string;
@@ -29,6 +33,6 @@ export interface Question{
 }
 
 export interface FbResponse{
-  name?: string
+  name: string
 }
 

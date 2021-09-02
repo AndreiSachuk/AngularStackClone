@@ -66,14 +66,14 @@
     </div>
   </div>
 
-  <div *ngIf="!isAdmin">
+  <div>
     <div>
       <label id="my-question">Is my question?</label>
       <mat-radio-group
         aria-labelledby="time-group-label"
         class="time-group"
-        [(ngModel)]="isMyQuestionSelect">
-        <mat-radio-button class="time-group-button" *ngFor="let cat of isMyQuestionCategories" [value]="cat">
+        [(ngModel)]="myQuestionSelect">
+        <mat-radio-button class="time-group-button" *ngFor="let cat of myQuestionCategories" [value]="cat">
           {{cat}}
         </mat-radio-button>
       </mat-radio-group>
@@ -104,7 +104,7 @@
 <div *ngIf="questions$ | async as questions" class="question__content" >
   <div fxLayout="row wrap" fxLayoutGap="16px grid" >
     <app-question *ngFor="let question of questions
-                  |filters: checkboxCategories.value : timeSelect : decisionSelect : isMyQuestionSelect : onModerationQuestionSelect
+                  |filters: checkboxCategories.value : timeSelect : decisionSelect : myQuestionSelect : onModerationQuestionSelect
                   |sort: 'date' : sortingDesc "
                   [question]="question" [view]="viewType" fxFlex.xs="100%"
                   [fxFlex]="(viewType==='grid') ? '25%': '100%'"

@@ -1,7 +1,8 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {AppThemes, ThemeService} from "./shared/services/theme.service";
+import { ThemeService} from "./shared/services/theme.service";
 import {takeUntil} from "rxjs/operators";
 import {Subject} from "rxjs";
+import {AppThemes} from "./shared/constants";
 
 
 @Component({
@@ -17,6 +18,7 @@ export class AppComponent implements OnInit, OnDestroy{
   constructor(private themeService: ThemeService) {}
 
   ngOnInit(): void {
+    console.log(this.darkThemeEnabled)
     this.themeService.getTheme().pipe(takeUntil(this.destroy$)).subscribe((data) => {
       this.darkThemeEnabled = data !== AppThemes.light
       localStorage.setItem("darkThemeEnabled", JSON.stringify(this.darkThemeEnabled));

@@ -1,10 +1,8 @@
-import { Injectable } from '@angular/core';
-import { Observable, Subject } from 'rxjs';
+import {Injectable} from '@angular/core';
+import {Observable, Subject} from 'rxjs';
+import {AppThemes} from "../constants";
 
-export enum AppThemes {
-  light = 'light-theme',
-  dark = 'dark-theme',
-}
+
 
 @Injectable({
   providedIn: 'root',

@@ -10,4 +10,9 @@ export const onModerationQuestionDefault: string = 'Does not matter';
 export const onModerationQuestionCategories: string[] = ['Yes', 'No', 'Does not matter'];
 
 export const isMyQuestion: string = 'Does not matter';
-export const isMyQuestionCategories: string[] = ['Yes', 'No', 'Does not matter'];
+export const myQuestionCategories: string[] = ['Yes', 'No', 'Does not matter'];
+
+export enum AppThemes {
+  light = 'light-theme',
+  dark = 'dark-theme',
+}

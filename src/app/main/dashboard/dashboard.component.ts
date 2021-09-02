@@ -11,7 +11,7 @@ import {
   decisionCategories,
   decisionSelectDefault,
   isMyQuestion,
-  isMyQuestionCategories,
+  myQuestionCategories,
   onModerationQuestionCategories,
   onModerationQuestionDefault,
   timeCategories,
@@ -44,8 +44,8 @@ export class DashboardComponent implements OnInit {
   onModerationQuestionSelect: string
   onModerationQuestionCategories = onModerationQuestionCategories
 
-  isMyQuestionSelect: string  ///////////
-  isMyQuestionCategories = isMyQuestionCategories  ////////////
+  myQuestionSelect: string
+  myQuestionCategories = myQuestionCategories
 
   checkboxCategories: FormGroup;
   viewType: string;
@@ -71,21 +71,21 @@ export class DashboardComponent implements OnInit {
     this.timeSelect = timeSelectDefault.days
     this.decisionSelect = decisionSelectDefault
     this.onModerationQuestionSelect = onModerationQuestionDefault
-    this.isMyQuestionSelect = isMyQuestion
+    this.myQuestionSelect = isMyQuestion
     this.checkboxCategories = this.formBuilder.group({
       ...this.checkCategoriesList
     });
   }
 
-  addCategoryToFilter(category: string) {
+  addCategoryToFilter(category: string) :void {
     this.checkboxCategories.controls[category].setValue(!this.checkboxCategories.controls[category].value);
   }
 
-  onChanged() {
+  onChanged() : void {
     this.request$.next(true)
   }
 
-  filtersMenu() {
+  filtersMenu(): void {
     this.isFiltersShow = !this.isFiltersShow
   }
 

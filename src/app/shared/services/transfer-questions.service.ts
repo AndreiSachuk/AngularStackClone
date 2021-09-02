@@ -1,8 +1,8 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {environment} from "../../../environments/environment";
-import {map} from "rxjs/operators";
-import {Comments, FbResponse, Question} from "../interfaces";
+import {map, switchMap} from "rxjs/operators";
+import {AllQuestions, Comments, FbResponse, Question} from "../interfaces";
 import {Observable} from "rxjs";
 
 @Injectable({
@@ -14,8 +14,8 @@ export class TransferQuestionsService {
   ) {
   }
 
-  createQuestion(question: Question): Observable<Object> {
-    return this.http.post(`${environment.fbDbQuestUrl}/question.json`, question)
+  createQuestion(question: Question): Observable<Question> {
+    return this.http.post<FbResponse>(`${environment.fbDbQuestUrl}/question.json`, question)
       .pipe(
         map((res: FbResponse) => {
           return {
@@ -26,13 +26,12 @@ export class TransferQuestionsService {
       )
   }
 
-
   getAllQuestions(): Observable<Question[]> {
-    return this.http.get(`${environment.fbDbQuestUrl}/question.json`)
+    return this.http.get<AllQuestions>(`${environment.fbDbQuestUrl}/question.json`)
       .pipe(
-        map((res: any) => {
+        map((res: AllQuestions) => {
           return Object.keys(res)
-            .map((key) => (
+            .map((key: string) => (
               {
                 ...res[key],
                 id: key,
@@ -50,20 +49,26 @@ export class TransferQuestionsService {
       }))
   }
 
-  removeQuestion(id: string): Observable<Object> {
-    return this.http.delete(`${environment.fbDbQuestUrl}/question/${id}.json`)
+  removeQuestion(id: string): Observable<null> {
+    return this.http.delete<null>(`${environment.fbDbQuestUrl}/question/${id}.json`)
   }
 
-  updateQuestion(question: Question): Observable<Object> {
-    return this.http.put(`${environment.fbDbQuestUrl}/question/${question.id}.json`, question)
+  updateQuestion(question: Question): Observable<Question> {
+    return this.http.put<Question>(`${environment.fbDbQuestUrl}/question/${question.id}.json`, question)
   }
 
-  patchQuestion(updateComponent: { [key: string]: boolean | Comments[] }, id: string): Observable<Object> {
-    return this.http.patch(`${environment.fbDbQuestUrl}/question/${id}.json`, updateComponent)
+  patchQuestion(updateComponent: { [key: string]: boolean | Comments[] }, id: string): Observable<{ [key: string]: boolean | Comments[] }> {
+    return this.http.patch<{ [key: string]: boolean | Comments[] }>(`${environment.fbDbQuestUrl}/question/${id}.json`, updateComponent)
   }
 
-  patchCommentsDecision(updateComponent: { [key: string]: boolean }, id: string, commentNumber: number): Observable<Object> {
+  patchCommentsDecision(updateComponent: { [key: string]: boolean }, id: string, commentNumber: number): Observable<{ [key: string]: boolean  | Comments[]}> {
     return this.http.patch(`${environment.fbDbQuestUrl}/question/${id}/comments/${commentNumber}.json`, updateComponent)
+      .pipe(
+        switchMap(res => {
+          return this.patchQuestion({['isResolved']: true}, id)
+        }))
+
   }
 
 }
+

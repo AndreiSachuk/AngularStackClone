@@ -7,7 +7,7 @@ export interface UserInfo  {
   email?: string;
   name?:string;
   displayName?: string;
-  photoUrl?: string,
+  photoURL?: string,
   emailVerified?: boolean,
   isAdmin?: boolean
 }

@@ -2,7 +2,7 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import { ThemeService} from "./shared/services/theme.service";
 import {takeUntil} from "rxjs/operators";
 import {Subject} from "rxjs";
-import {AppThemes} from "./shared/constants";
+import {appThemesArray} from "./shared/constants";
 
 
 @Component({
@@ -11,19 +11,20 @@ import {AppThemes} from "./shared/constants";
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit, OnDestroy{
-  darkThemeEnabled =  JSON.parse(localStorage.getItem("darkThemeEnabled")) || false;
+  activeClass:string = JSON.parse(localStorage.getItem("Current theme")) || appThemesArray[0];
 
   destroy$: Subject<boolean> = new Subject<boolean>();
 
-  constructor(private themeService: ThemeService) {}
+  constructor(private themeService: ThemeService) {
+
+  }
 
   ngOnInit(): void {
-    console.log(this.darkThemeEnabled)
-    this.themeService.getTheme().pipe(takeUntil(this.destroy$)).subscribe((data) => {
-      this.darkThemeEnabled = data !== AppThemes.light
-      localStorage.setItem("darkThemeEnabled", JSON.stringify(this.darkThemeEnabled));
+    this.themeService.getThemeArr().pipe(takeUntil(this.destroy$)).subscribe((data) => {
+      console.log('1c')
+      this.activeClass = data
+      localStorage.setItem("Current theme", JSON.stringify(this.activeClass));
     });
-
   }
 
   ngOnDestroy(): void {

@@ -1,7 +1,7 @@
 <h1 class="center">User Profile</h1>
 
 <div class="center">
-  <img src="{{(userInfo.photoUrl) || 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTcZsL6PVn0SNiabAKz7js0QknS2ilJam19QQ&usqp=CAU'}}"
+  <img src="{{userInfo.photoURL || 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTcZsL6PVn0SNiabAKz7js0QknS2ilJam19QQ&usqp=CAU'}}"
        alt="{{userInfo.displayName || userInfo.email}}">
   <div >
     <h1>Hello: <strong>{{(userInfo.displayName) || 'User'}}</strong></h1>

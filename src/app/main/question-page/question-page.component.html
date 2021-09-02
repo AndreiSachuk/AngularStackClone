@@ -25,9 +25,9 @@
 
       </div>
       <div>
-        <button mat-button (click)=" isApproved()" *ngIf="!question.isApproved && isAdmin">Approve</button>
-        <button mat-button (click)="deleteQuestion()" *ngIf="isAdmin">Delete</button>
-        <button mat-button [routerLink]="['/question', question.id,'edit']" *ngIf="question.user === currentEmail && !question.isApproved">Edit</button>
+        <button mat-raised-button (click)=" isApproved()" *ngIf="!question.isApproved && isAdmin">Approve</button>
+        <button mat-raised-button (click)="deleteQuestion()" *ngIf="isAdmin">Delete</button>
+        <button mat-raised-button [routerLink]="['/question', question.id,'edit']" *ngIf="question.user === currentEmail && !question.isApproved">Edit</button>
       </div>
     </mat-card-actions>
 

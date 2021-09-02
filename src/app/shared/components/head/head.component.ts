@@ -4,7 +4,8 @@ import {Router} from "@angular/router";
 import {UserInfo} from "../../interfaces";
 import {OverlayContainer} from "@angular/cdk/overlay";
 import {ThemeService} from "../../services/theme.service";
-import {AppThemes} from "../../constants";
+import {appThemesArray} from "../../constants";
+
 
 @Component({
   selector: 'app-head',
@@ -20,9 +21,11 @@ export class HeadComponent implements OnInit {
               private overlayContainer: OverlayContainer,
               private themeService: ThemeService,
               ) {
-    themeService.getTheme().subscribe(data => {
-      if (data === AppThemes.light) overlayContainer.getContainerElement().classList.remove(AppThemes.dark);
-      else overlayContainer.getContainerElement().classList.add(AppThemes.dark);
+    themeService.getThemeArr().subscribe(data => {
+      appThemesArray
+        .filter(theme => theme != data)
+        .forEach(delThemeClass => overlayContainer.getContainerElement().classList.remove(delThemeClass))
+      overlayContainer.getContainerElement().classList.add(data);
     });
   }
 
@@ -36,7 +39,8 @@ export class HeadComponent implements OnInit {
       })
   }
 
-  changeTheme() {
-    this.themeService.toggleTheme()
+  changeThemeArr() {
+    this.themeService.setTheme()
   }
+
 }

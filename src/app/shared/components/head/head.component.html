@@ -4,7 +4,7 @@
     <a mat-button class="font" routerLink="/dashboard"><i class="fa fa-coffee"></i> StackClone</a>
   </div>
   <div *ngIf="!authService.getUserInfo(); else authOK">
-    <button mat-button value="mode" aria-label="Row viewType" (click)="changeTheme()">
+    <button mat-button value="mode" aria-label="Row viewType" (click)="changeThemeArr()">
       <mat-icon>dark_mode</mat-icon>
     </button>
     <a mat-button routerLink="/sign-in">Sign In</a>
@@ -12,7 +12,7 @@
   </div>
   <ng-template #authOK>
     <div>
-      <button mat-button value="mode" aria-label="Row viewType" (click)="changeTheme()">
+      <button mat-button value="mode" aria-label="Row viewType" (click)="changeThemeArr()">
         <mat-icon>dark_mode</mat-icon>
       </button>
       <a mat-button routerLink="/add-question">ADD QUESTION</a>

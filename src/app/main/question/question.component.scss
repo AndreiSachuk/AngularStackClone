@@ -22,10 +22,14 @@ a{
   flex-direction: row-reverse;
 }
 
+.moderation{
+  color: coral;
+}
+
 .row{
   display: flex;
   justify-content: space-between;
-  lign-items: center;
+  align-items: center;
   &__date{
     width: 15%;
   }

@@ -1,6 +1,10 @@
 <mat-card class="mat-elevation-z4" *ngIf="view==='grid'"  >
   <div class="text-center">
-    <mat-card-title><a [routerLink]="['/question', question.id]">{{question.title}}</a></mat-card-title>
+    <mat-card-title>
+      <a [routerLink]="['/question', question.id]">{{question.title}}</a>
+      <div *ngIf="!question.isApproved" class="moderation">on moderation</div>
+
+    </mat-card-title>
     <mat-card-subtitle>{{question.date | date:'medium'}}</mat-card-subtitle>
   </div>
 
@@ -14,9 +18,9 @@
     </div>
   </mat-card-content>
   <mat-card-actions class="margin-auto button_controls">
-    <button mat-button (click)=" isApproved()" *ngIf="!question.isApproved && isAdmin">Approve</button>
-    <button mat-button (click)=" deleteQuestion()" *ngIf="isAdmin">Delete</button>
-    <button mat-button [routerLink]="['/question', question.id]">Open</button>
+    <button mat-raised-button (click)=" isApproved()" *ngIf="!question.isApproved && isAdmin">Approve</button>
+    <button mat-raised-button (click)=" deleteQuestion()" *ngIf="isAdmin">Delete</button>
+    <button mat-raised-button [routerLink]="['/question', question.id]">Open</button>
   </mat-card-actions>
 </mat-card>
 
@@ -27,6 +31,7 @@
   </div>
   <div class="row__question">
     <a [routerLink]="['/question', question.id]">{{question.title}}</a>
+    <div *ngIf="!question.isApproved" class="moderation">on moderation</div>
   </div>
 
   <div class="row__category">
@@ -36,9 +41,9 @@
   </div>
 
   <div class="row__controls button_controls">
-    <button mat-button (click)=" isApproved()" *ngIf="!question.isApproved && isAdmin">Approve</button>
-    <button mat-button (click)=" deleteQuestion()" *ngIf="isAdmin">Delete</button>
-    <button mat-button [routerLink]="['/question', question.id]">Open</button>
+    <button mat-raised-button (click)=" isApproved()" *ngIf="!question.isApproved && isAdmin">Approve</button>
+    <button mat-raised-button (click)=" deleteQuestion()" *ngIf="isAdmin">Delete</button>
+    <button mat-raised-button [routerLink]="['/question', question.id]">Open</button>
   </div>
 
 

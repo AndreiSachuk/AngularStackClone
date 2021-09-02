@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {SharedAuthService} from "../../shared/services/shared-auth.service";
+import {UserInfo} from "../../shared/interfaces";
 
 @Component({
   selector: 'app-user',
@@ -7,11 +8,12 @@ import {SharedAuthService} from "../../shared/services/shared-auth.service";
   styleUrls: ['./user.component.scss']
 })
 export class UserComponent implements OnInit {
-  userInfo = this.authService.getUserInfo()
+  userInfo: UserInfo
 
   constructor(private authService: SharedAuthService) { }
 
   ngOnInit(): void {
+    this.userInfo = this.authService.getUserInfo()
   }
 
 }
